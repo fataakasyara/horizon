@@ -21,22 +21,21 @@ export const OfflineIndicator = () => {
 
   return (
     <Badge 
-      variant={isOnline ? "secondary" : "destructive"} 
-      className={`fixed top-4 right-4 z-50 ${
+      className={`fixed top-6 right-6 z-50 px-4 py-2 rounded-full border-0 shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-105 ${
         isOnline 
-          ? 'bg-green-100 text-green-800 border-green-300' 
-          : 'bg-red-100 text-red-800 border-red-300'
+          ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white' 
+          : 'bg-gradient-to-r from-red-500 to-orange-500 text-white animate-pulse'
       }`}
     >
       {isOnline ? (
         <>
-          <Wifi className="h-3 w-3 mr-1" />
+          <Wifi className="h-3 w-3 mr-2" />
           Online
         </>
       ) : (
         <>
-          <WifiOff className="h-3 w-3 mr-1" />
-          Mode Offline
+          <WifiOff className="h-3 w-3 mr-2" />
+          Offline
         </>
       )}
     </Badge>

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Event } from '@/types/event';
 import { useEvents } from '@/hooks/useEvents';
@@ -10,8 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, Search, Calendar, Clock, Bell, Home } from 'lucide-react';
-import { toast } from '@/hooks/use-toast';
+import { Plus, Search, Calendar, Clock, Bell, Home, Filter } from 'lucide-react';
 
 export const Dashboard = () => {
   const { 
@@ -122,7 +120,7 @@ export const Dashboard = () => {
 
   if (showForm) {
     return (
-      <div className="min-h-screen py-8 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-horizon-purple-50 via-white to-horizon-yellow-50 py-8 px-4">
         <OfflineIndicator />
         <EventForm
           event={editingEvent || undefined}
@@ -137,46 +135,48 @@ export const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-horizon-purple-50 via-white to-horizon-yellow-50">
       <OfflineIndicator />
       
       {/* Header */}
-      <div className="bg-gradient-to-r from-horizon-purple-600 via-horizon-purple-500 to-horizon-yellow-500 text-white py-8 px-4">
+      <div className="bg-gradient-to-r from-horizon-purple-500 via-horizon-purple-600 to-horizon-yellow-500 text-white py-12 px-4">
         <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-4xl font-bold mb-2">Horizon Dashboard</h1>
-              <p className="text-purple-100">Kelola jadwal acara Anda dengan mudah</p>
+          <div className="flex items-center justify-between mb-8">
+            <div className="space-y-2">
+              <h1 className="text-4xl md:text-5xl font-bold">Dashboard</h1>
+              <p className="text-purple-100 text-lg">Kelola jadwal acara dengan mudah</p>
             </div>
             <Button
               onClick={() => window.location.href = '/'}
               variant="outline"
-              className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+              className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm rounded-full px-6 py-3 transition-all duration-300 hover:scale-105"
             >
               <Home className="h-4 w-4 mr-2" />
               Beranda
             </Button>
           </div>
           
-          <div className="flex flex-col lg:flex-row gap-4">
-            <div className="flex-1">
+          {/* Search and Filters */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            <div className="lg:col-span-6">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/60" />
                 <Input
                   placeholder="Cari acara..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-purple-200"
+                  className="pl-12 bg-white/10 border-white/30 text-white placeholder:text-white/60 rounded-full h-12 backdrop-blur-sm focus:bg-white/20 transition-all duration-300"
                 />
               </div>
             </div>
             
-            <div className="lg:w-48">
+            <div className="lg:col-span-3">
               <Select value={filterCategory} onValueChange={setFilterCategory}>
-                <SelectTrigger className="bg-white/10 border-white/20 text-white">
+                <SelectTrigger className="bg-white/10 border-white/30 text-white rounded-full h-12 backdrop-blur-sm hover:bg-white/20 transition-all duration-300">
+                  <Filter className="h-4 w-4 mr-2" />
                   <SelectValue placeholder="Kategori" />
                 </SelectTrigger>
-                <SelectContent className="bg-white">
+                <SelectContent className="bg-white rounded-2xl border-0 shadow-2xl">
                   <SelectItem value="all">Semua Kategori</SelectItem>
                   <SelectItem value="meeting">Meeting</SelectItem>
                   <SelectItem value="personal">Personal</SelectItem>
@@ -189,30 +189,41 @@ export const Dashboard = () => {
               </Select>
             </div>
             
-            <Button
-              onClick={() => setShowForm(true)}
-              className="bg-white text-horizon-purple-600 hover:bg-gray-100 font-semibold"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Tambah Acara
-            </Button>
+            <div className="lg:col-span-3">
+              <Button
+                onClick={() => setShowForm(true)}
+                className="w-full bg-white text-horizon-purple-600 hover:bg-gray-100 font-semibold rounded-full h-12 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+              >
+                <Plus className="h-5 w-5 mr-2" />
+                Tambah Acara
+              </Button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Content */}
       <div className="max-w-6xl mx-auto py-8 px-4">
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 bg-white/50 backdrop-blur-sm">
-            <TabsTrigger value="all" className="data-[state=active]:bg-horizon-purple-500 data-[state=active]:text-white">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
+          <TabsList className="grid w-full grid-cols-3 bg-white/60 backdrop-blur-sm border-0 shadow-lg rounded-2xl p-2">
+            <TabsTrigger 
+              value="all" 
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
+            >
               <Calendar className="h-4 w-4 mr-2" />
               Semua Acara
             </TabsTrigger>
-            <TabsTrigger value="today" className="data-[state=active]:bg-horizon-purple-500 data-[state=active]:text-white">
+            <TabsTrigger 
+              value="today" 
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
+            >
               <Clock className="h-4 w-4 mr-2" />
               Hari Ini
             </TabsTrigger>
-            <TabsTrigger value="upcoming" className="data-[state=active]:bg-horizon-purple-500 data-[state=active]:text-white">
+            <TabsTrigger 
+              value="upcoming" 
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
+            >
               <Bell className="h-4 w-4 mr-2" />
               Mendatang
             </TabsTrigger>
@@ -220,14 +231,16 @@ export const Dashboard = () => {
 
           <TabsContent value={activeTab}>
             {getEventsForTab().length === 0 ? (
-              <div className="text-center py-12">
-                <Calendar className="h-16 w-16 mx-auto text-horizon-purple-300 mb-4" />
-                <h3 className="text-xl font-semibold text-horizon-purple-600 mb-2">
+              <div className="text-center py-16">
+                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-horizon-purple-100 to-horizon-yellow-100 flex items-center justify-center">
+                  <Calendar className="h-12 w-12 text-horizon-purple-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-700 mb-4">
                   {activeTab === 'today' ? 'Tidak ada acara hari ini' :
                    activeTab === 'upcoming' ? 'Tidak ada acara mendatang' :
                    'Belum ada acara'}
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-500 mb-8 max-w-md mx-auto">
                   {activeTab === 'today' ? 'Hari ini terlihat kosong. Nikmati waktu luang Anda!' :
                    activeTab === 'upcoming' ? 'Tidak ada acara yang dijadwalkan untuk masa depan.' :
                    searchTerm || filterCategory !== 'all' ? 'Coba ubah filter pencarian Anda.' :
@@ -236,9 +249,9 @@ export const Dashboard = () => {
                 {(!searchTerm && filterCategory === 'all') && (
                   <Button
                     onClick={() => setShowForm(true)}
-                    className="horizon-button"
+                    className="bg-gradient-to-r from-horizon-purple-500 to-horizon-yellow-500 hover:from-horizon-purple-600 hover:to-horizon-yellow-600 text-white border-0 shadow-lg rounded-full px-8 py-3 font-semibold transition-all duration-300 hover:scale-105"
                   >
-                    <Plus className="h-4 w-4 mr-2" />
+                    <Plus className="h-5 w-5 mr-2" />
                     Tambah Acara Pertama
                   </Button>
                 )}
