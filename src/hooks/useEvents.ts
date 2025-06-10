@@ -9,13 +9,59 @@ export const useEvents = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Generate recurring event instances
+  const generateRecurringEvents = (baseEvent: Event): Event[] => {
+    if (baseEvent.recurrence.type === 'none') {
+      return [baseEvent];
+    }
+
+    const instances: Event[] = [];
+    const startDate = new Date(baseEvent.date);
+    const endDate = baseEvent.recurrence.endDate 
+      ? new Date(baseEvent.recurrence.endDate) 
+      : new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)); // 1 year from now
+
+    let currentDate = new Date(startDate);
+
+    while (currentDate <= endDate) {
+      instances.push({
+        ...baseEvent,
+        id: `${baseEvent.id}-${currentDate.toISOString().split('T')[0]}`,
+        date: currentDate.toISOString().split('T')[0]
+      });
+
+      if (baseEvent.recurrence.type === 'weekly') {
+        currentDate.setDate(currentDate.getDate() + 7);
+      }
+    }
+
+    return instances;
+  };
+
+  // Get all event instances including recurring ones
+  const getAllEventInstances = (): Event[] => {
+    const allInstances: Event[] = [];
+    
+    events.forEach(event => {
+      const instances = generateRecurringEvents(event);
+      allInstances.push(...instances);
+    });
+
+    return allInstances;
+  };
+
   // Load events from localStorage on mount
   useEffect(() => {
     try {
       const savedEvents = localStorage.getItem(STORAGE_KEY);
       if (savedEvents) {
         const parsedEvents = JSON.parse(savedEvents) as Event[];
-        setEvents(parsedEvents);
+        // Migrate old events to new format
+        const migratedEvents = parsedEvents.map(event => ({
+          ...event,
+          recurrence: event.recurrence || { type: 'none' as const }
+        }));
+        setEvents(migratedEvents);
       }
     } catch (error) {
       console.error('Error loading events from storage:', error);
@@ -50,14 +96,16 @@ export const useEvents = () => {
       ...eventData,
       id: crypto.randomUUID(),
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
+      recurrence: eventData.recurrence || { type: 'none' }
     };
 
     setEvents(prev => [...prev, newEvent]);
     
+    const recurringText = newEvent.recurrence.type === 'weekly' ? ' (berulang mingguan)' : '';
     toast({
       title: "Acara ditambahkan",
-      description: `${newEvent.title} berhasil ditambahkan ke jadwal.`,
+      description: `${newEvent.title}${recurringText} berhasil ditambahkan ke jadwal.`,
     });
 
     return newEvent;
@@ -117,7 +165,9 @@ export const useEvents = () => {
 
   const getUpcomingEvents = (): Event[] => {
     const now = new Date();
-    return events
+    const allInstances = getAllEventInstances();
+    
+    return allInstances
       .filter(event => {
         const eventDateTime = new Date(`${event.date}T${event.time}`);
         return eventDateTime > now;
@@ -126,18 +176,22 @@ export const useEvents = () => {
         const dateA = new Date(`${a.date}T${a.time}`);
         const dateB = new Date(`${b.date}T${b.time}`);
         return dateA.getTime() - dateB.getTime();
-      });
+      })
+      .slice(0, 50); // Limit to 50 upcoming events
   };
 
   const getTodayEvents = (): Event[] => {
     const today = new Date().toISOString().split('T')[0];
-    return events
+    const allInstances = getAllEventInstances();
+    
+    return allInstances
       .filter(event => event.date === today)
       .sort((a, b) => a.time.localeCompare(b.time));
   };
 
   return {
-    events,
+    events: getAllEventInstances(),
+    baseEvents: events, // Original events without instances
     isLoading,
     addEvent,
     updateEvent,

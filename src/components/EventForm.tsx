@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { X, Calendar, Clock, MapPin, Bell, Save } from 'lucide-react';
+import { X, Calendar, Clock, MapPin, Bell, Save, Repeat } from 'lucide-react';
 
 interface EventFormProps {
   event?: Event;
@@ -25,7 +25,11 @@ export const EventForm = ({ event, onSubmit, onCancel }: EventFormProps) => {
     location: '',
     category: '',
     isNotificationEnabled: true,
-    notificationTime: 15
+    notificationTime: 15,
+    recurrence: {
+      type: 'none' as 'none' | 'weekly',
+      endDate: ''
+    }
   });
 
   useEffect(() => {
@@ -38,7 +42,8 @@ export const EventForm = ({ event, onSubmit, onCancel }: EventFormProps) => {
         location: event.location || '',
         category: event.category || '',
         isNotificationEnabled: event.isNotificationEnabled,
-        notificationTime: event.notificationTime
+        notificationTime: event.notificationTime,
+        recurrence: event.recurrence || { type: 'none', endDate: '' }
       });
     }
   }, [event]);
@@ -60,12 +65,33 @@ export const EventForm = ({ event, onSubmit, onCancel }: EventFormProps) => {
     }));
   };
 
+  const handleRecurrenceChange = (field: string, value: any) => {
+    setFormData(prev => ({
+      ...prev,
+      recurrence: {
+        ...prev.recurrence,
+        [field]: value
+      }
+    }));
+  };
+
   const today = new Date().toISOString().split('T')[0];
   
   const getMinTime = () => {
     if (formData.date === today) {
       const now = new Date();
       return `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+    }
+    return '';
+  };
+
+  // Calculate end date for weekly recurrence (3 months from start date)
+  const getDefaultEndDate = () => {
+    if (formData.date && formData.recurrence.type === 'weekly') {
+      const startDate = new Date(formData.date);
+      const endDate = new Date(startDate);
+      endDate.setMonth(endDate.getMonth() + 3);
+      return endDate.toISOString().split('T')[0];
     }
     return '';
   };
@@ -150,6 +176,45 @@ export const EventForm = ({ event, onSubmit, onCancel }: EventFormProps) => {
                 required
               />
             </div>
+          </div>
+
+          {/* Recurrence */}
+          <div className="p-6 bg-gradient-to-br from-horizon-yellow-50 to-horizon-purple-50 rounded-3xl border border-horizon-purple-100 space-y-4">
+            <div className="flex items-center space-x-3">
+              <Label htmlFor="recurrence" className="text-gray-700 font-semibold text-base flex items-center gap-2">
+                <Repeat className="h-4 w-4 text-horizon-purple-500" />
+                Pengulangan Acara
+              </Label>
+            </div>
+            
+            <Select value={formData.recurrence.type} onValueChange={(value) => handleRecurrenceChange('type', value)}>
+              <SelectTrigger className="border-gray-200 focus:border-horizon-purple-500 rounded-2xl h-12 text-base transition-all duration-300">
+                <SelectValue placeholder="Pilih jenis pengulangan" />
+              </SelectTrigger>
+              <SelectContent className="bg-white rounded-2xl border-0 shadow-2xl">
+                <SelectItem value="none">Tidak berulang (sekali saja)</SelectItem>
+                <SelectItem value="weekly">Setiap minggu</SelectItem>
+              </SelectContent>
+            </Select>
+
+            {formData.recurrence.type === 'weekly' && (
+              <div className="space-y-3 pl-4">
+                <Label htmlFor="endDate" className="text-gray-600 font-medium text-sm">
+                  Sampai tanggal (opsional)
+                </Label>
+                <Input
+                  id="endDate"
+                  type="date"
+                  value={formData.recurrence.endDate || getDefaultEndDate()}
+                  onChange={(e) => handleRecurrenceChange('endDate', e.target.value)}
+                  min={formData.date}
+                  className="border-gray-200 focus:border-horizon-purple-500 rounded-2xl h-10 text-sm transition-all duration-300 focus:shadow-lg"
+                />
+                <p className="text-xs text-gray-500">
+                  Kosongkan untuk pengulangan tanpa batas (sampai 1 tahun)
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Location */}
