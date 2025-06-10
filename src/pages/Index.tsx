@@ -129,13 +129,11 @@ const Index = () => {
       {/* Footer */}
       <footer className="bg-gradient-to-r from-horizon-purple-800 to-horizon-purple-900 text-white py-12 px-4">
         <div className="max-w-4xl mx-auto text-center space-y-4">
-          <h3 className="text-2xl font-bold">Horizon</h3>
+          <h3 className="text-2xl font-bold">NotifMeHorizon</h3>
           <p className="text-purple-200">
             Mengelola jadwal dengan teknologi terdepan
           </p>
-          <div className="text-purple-300 text-sm">
-            © 2024 Horizon Event Scheduler. Dibuat dengan ❤️
-          </div>
+          <div className="text-purple-300 text-sm">© 2024 Notify Me Horizon.</div>
         </div>
       </footer>
     </div>;
