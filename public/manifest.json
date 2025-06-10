@@ -1,0 +1,21 @@
+
+{
+  "name": "Horizon Event Scheduler",
+  "short_name": "Horizon",
+  "description": "Platform manajemen jadwal acara dengan fitur countdown timer, mode offline, dan notifikasi real-time",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fef9c3",
+  "theme_color": "#a855f7",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["productivity", "lifestyle"],
+  "lang": "id",
+  "dir": "ltr"
+}
