@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Event } from '@/types/event';
 import { Button } from '@/components/ui/button';
@@ -28,7 +27,7 @@ export const EventForm = ({ event, onSubmit, onCancel }: EventFormProps) => {
     notificationTime: 15,
     recurrence: {
       type: 'none' as 'none' | 'weekly',
-      endDate: ''
+      endDate: undefined as string | undefined
     }
   });
 
@@ -43,7 +42,7 @@ export const EventForm = ({ event, onSubmit, onCancel }: EventFormProps) => {
         category: event.category || '',
         isNotificationEnabled: event.isNotificationEnabled,
         notificationTime: event.notificationTime,
-        recurrence: event.recurrence || { type: 'none', endDate: '' }
+        recurrence: event.recurrence || { type: 'none', endDate: undefined }
       });
     }
   }, [event]);
