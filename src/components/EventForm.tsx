@@ -42,7 +42,10 @@ export const EventForm = ({ event, onSubmit, onCancel }: EventFormProps) => {
         category: event.category || '',
         isNotificationEnabled: event.isNotificationEnabled,
         notificationTime: event.notificationTime,
-        recurrence: event.recurrence || { type: 'none', endDate: undefined }
+        recurrence: {
+          type: event.recurrence?.type || 'none',
+          endDate: event.recurrence?.endDate || undefined
+        }
       });
     }
   }, [event]);
