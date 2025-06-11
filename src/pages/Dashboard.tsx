@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Event } from '@/types/event';
 import { useEvents } from '@/hooks/useEvents';
@@ -12,14 +13,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Plus, Search, Calendar, Clock, Bell, Home, Filter } from 'lucide-react';
 
 export const Dashboard = () => {
+  console.log('Dashboard component is rendering');
+  
   const { 
     events, 
     addEvent, 
     updateEvent, 
     deleteEvent, 
     getUpcomingEvents, 
-    getTodayEvents 
+    getTodayEvents,
+    isLoading
   } = useEvents();
+  
+  console.log('Events from useEvents:', events);
+  console.log('IsLoading from useEvents:', isLoading);
   
   const { requestPermission, scheduleNotification } = useNotifications();
   
@@ -29,13 +36,17 @@ export const Dashboard = () => {
   const [filterCategory, setFilterCategory] = useState('all');
   const [activeTab, setActiveTab] = useState('all');
 
+  console.log('Dashboard state:', { showForm, searchTerm, filterCategory, activeTab });
+
   // Request notification permission on mount
   useEffect(() => {
+    console.log('Requesting notification permission');
     requestPermission();
   }, [requestPermission]);
 
   // Schedule notifications for new events
   useEffect(() => {
+    console.log('Scheduling notifications for events:', events);
     events.forEach(event => {
       if (event.isNotificationEnabled) {
         scheduleNotification(event);
@@ -44,6 +55,7 @@ export const Dashboard = () => {
   }, [events, scheduleNotification]);
 
   const handleAddEvent = (eventData: Omit<Event, 'id' | 'createdAt' | 'updatedAt'>) => {
+    console.log('Adding new event:', eventData);
     const newEvent = addEvent(eventData);
     if (newEvent.isNotificationEnabled) {
       scheduleNotification(newEvent);
@@ -53,6 +65,7 @@ export const Dashboard = () => {
 
   const handleUpdateEvent = (eventData: Omit<Event, 'id' | 'createdAt' | 'updatedAt'>) => {
     if (editingEvent) {
+      console.log('Updating event:', editingEvent.id, eventData);
       const updatedEvent = updateEvent(editingEvent.id, eventData);
       if (updatedEvent?.isNotificationEnabled) {
         scheduleNotification(updatedEvent);
@@ -64,6 +77,7 @@ export const Dashboard = () => {
 
   const handleDeleteEvent = (id: string) => {
     if (window.confirm('Apakah Anda yakin ingin menghapus acara ini?')) {
+      console.log('Deleting event:', id);
       deleteEvent(id);
     }
   };
@@ -71,6 +85,7 @@ export const Dashboard = () => {
   const handleToggleNotification = (id: string) => {
     const event = events.find(e => e.id === id);
     if (event) {
+      console.log('Toggling notification for event:', id);
       const updatedEvent = updateEvent(id, { 
         isNotificationEnabled: !event.isNotificationEnabled 
       });
@@ -81,6 +96,7 @@ export const Dashboard = () => {
   };
 
   const handleEditEvent = (event: Event) => {
+    console.log('Editing event:', event);
     setEditingEvent(event);
     setShowForm(true);
   };
@@ -95,30 +111,41 @@ export const Dashboard = () => {
     return matchesSearch && matchesCategory;
   });
 
+  console.log('Filtered events:', filteredEvents);
+
   const getEventsForTab = () => {
     switch (activeTab) {
       case 'today':
-        return getTodayEvents().filter(event => {
+        const todayEvents = getTodayEvents().filter(event => {
           const matchesSearch = event.title.toLowerCase().includes(searchTerm.toLowerCase());
           const matchesCategory = filterCategory === 'all' || event.category === filterCategory;
           return matchesSearch && matchesCategory;
         });
+        console.log('Today events:', todayEvents);
+        return todayEvents;
       case 'upcoming':
-        return getUpcomingEvents().filter(event => {
+        const upcomingEvents = getUpcomingEvents().filter(event => {
           const matchesSearch = event.title.toLowerCase().includes(searchTerm.toLowerCase());
           const matchesCategory = filterCategory === 'all' || event.category === filterCategory;
           return matchesSearch && matchesCategory;
         });
+        console.log('Upcoming events:', upcomingEvents);
+        return upcomingEvents;
       default:
-        return filteredEvents.sort((a, b) => {
+        const sortedEvents = filteredEvents.sort((a, b) => {
           const dateA = new Date(`${a.date}T${a.time}`);
           const dateB = new Date(`${b.date}T${b.time}`);
           return dateA.getTime() - dateB.getTime();
         });
+        console.log('All sorted events:', sortedEvents);
+        return sortedEvents;
     }
   };
 
+  console.log('ShowForm state:', showForm);
+
   if (showForm) {
+    console.log('Rendering EventForm');
     return (
       <div className="min-h-screen bg-gradient-to-br from-horizon-purple-50 via-white to-horizon-yellow-50 py-8 px-4">
         <OfflineIndicator />
@@ -133,6 +160,25 @@ export const Dashboard = () => {
       </div>
     );
   }
+
+  console.log('Rendering main dashboard');
+  
+  if (isLoading) {
+    console.log('Dashboard is in loading state');
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-horizon-purple-50 via-white to-horizon-yellow-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-horizon-purple-100 to-horizon-yellow-100 flex items-center justify-center animate-spin">
+            <Calendar className="h-8 w-8 text-horizon-purple-400" />
+          </div>
+          <p className="text-gray-600">Memuat dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const eventsForTab = getEventsForTab();
+  console.log('Events for current tab:', eventsForTab);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-horizon-purple-50 via-white to-horizon-yellow-50">
@@ -230,7 +276,7 @@ export const Dashboard = () => {
           </TabsList>
 
           <TabsContent value={activeTab}>
-            {getEventsForTab().length === 0 ? (
+            {eventsForTab.length === 0 ? (
               <div className="text-center py-16">
                 <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-horizon-purple-100 to-horizon-yellow-100 flex items-center justify-center">
                   <Calendar className="h-12 w-12 text-horizon-purple-400" />
@@ -258,7 +304,7 @@ export const Dashboard = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {getEventsForTab().map(event => (
+                {eventsForTab.map(event => (
                   <EventCard
                     key={event.id}
                     event={event}

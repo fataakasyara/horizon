@@ -9,8 +9,12 @@ export const useEvents = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  console.log('useEvents hook initialized');
+
   // Generate recurring event instances
   const generateRecurringEvents = (baseEvent: Event): Event[] => {
+    console.log('Generating recurring events for:', baseEvent.title);
+    
     if (baseEvent.recurrence.type === 'none') {
       return [baseEvent];
     }
@@ -35,6 +39,7 @@ export const useEvents = () => {
       }
     }
 
+    console.log(`Generated ${instances.length} instances for ${baseEvent.title}`);
     return instances;
   };
 
@@ -47,21 +52,32 @@ export const useEvents = () => {
       allInstances.push(...instances);
     });
 
+    console.log('Total event instances:', allInstances.length);
     return allInstances;
   };
 
   // Load events from localStorage on mount
   useEffect(() => {
+    console.log('Loading events from localStorage');
+    
     try {
       const savedEvents = localStorage.getItem(STORAGE_KEY);
+      console.log('Saved events from localStorage:', savedEvents);
+      
       if (savedEvents) {
         const parsedEvents = JSON.parse(savedEvents) as Event[];
+        console.log('Parsed events:', parsedEvents);
+        
         // Migrate old events to new format
         const migratedEvents = parsedEvents.map(event => ({
           ...event,
           recurrence: event.recurrence || { type: 'none' as const }
         }));
+        
+        console.log('Migrated events:', migratedEvents);
         setEvents(migratedEvents);
+      } else {
+        console.log('No saved events found in localStorage');
       }
     } catch (error) {
       console.error('Error loading events from storage:', error);
@@ -71,6 +87,7 @@ export const useEvents = () => {
         variant: "destructive"
       });
     } finally {
+      console.log('Setting isLoading to false');
       setIsLoading(false);
     }
   }, []);
@@ -78,8 +95,10 @@ export const useEvents = () => {
   // Save events to localStorage whenever events change
   useEffect(() => {
     if (!isLoading) {
+      console.log('Saving events to localStorage:', events);
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
+        console.log('Events saved successfully');
       } catch (error) {
         console.error('Error saving events to storage:', error);
         toast({
@@ -92,6 +111,8 @@ export const useEvents = () => {
   }, [events, isLoading]);
 
   const addEvent = (eventData: Omit<Event, 'id' | 'createdAt' | 'updatedAt'>): Event => {
+    console.log('Adding event:', eventData);
+    
     const newEvent: Event = {
       ...eventData,
       id: crypto.randomUUID(),
@@ -100,7 +121,12 @@ export const useEvents = () => {
       recurrence: eventData.recurrence || { type: 'none' }
     };
 
-    setEvents(prev => [...prev, newEvent]);
+    console.log('New event created:', newEvent);
+    setEvents(prev => {
+      const updated = [...prev, newEvent];
+      console.log('Updated events array:', updated);
+      return updated;
+    });
     
     const recurringText = newEvent.recurrence.type === 'weekly' ? ' (berulang mingguan)' : '';
     toast({
@@ -112,8 +138,11 @@ export const useEvents = () => {
   };
 
   const updateEvent = (id: string, updates: Partial<Omit<Event, 'id' | 'createdAt'>>): Event | null => {
+    console.log('Updating event:', id, updates);
+    
     const eventIndex = events.findIndex(e => e.id === id);
     if (eventIndex === -1) {
+      console.error('Event not found:', id);
       toast({
         title: "Error",
         description: "Acara tidak ditemukan.",
@@ -128,6 +157,7 @@ export const useEvents = () => {
       updatedAt: new Date().toISOString()
     };
 
+    console.log('Updated event:', updatedEvent);
     setEvents(prev => prev.map(e => e.id === id ? updatedEvent : e));
     
     toast({
@@ -139,8 +169,11 @@ export const useEvents = () => {
   };
 
   const deleteEvent = (id: string): boolean => {
+    console.log('Deleting event:', id);
+    
     const event = events.find(e => e.id === id);
     if (!event) {
+      console.error('Event not found for deletion:', id);
       toast({
         title: "Error",
         description: "Acara tidak ditemukan.",
@@ -167,7 +200,7 @@ export const useEvents = () => {
     const now = new Date();
     const allInstances = getAllEventInstances();
     
-    return allInstances
+    const upcoming = allInstances
       .filter(event => {
         const eventDateTime = new Date(`${event.date}T${event.time}`);
         return eventDateTime > now;
@@ -178,19 +211,33 @@ export const useEvents = () => {
         return dateA.getTime() - dateB.getTime();
       })
       .slice(0, 50); // Limit to 50 upcoming events
+    
+    console.log('Upcoming events:', upcoming);
+    return upcoming;
   };
 
   const getTodayEvents = (): Event[] => {
     const today = new Date().toISOString().split('T')[0];
     const allInstances = getAllEventInstances();
     
-    return allInstances
+    const todayEvents = allInstances
       .filter(event => event.date === today)
       .sort((a, b) => a.time.localeCompare(b.time));
+    
+    console.log('Today events:', todayEvents);
+    return todayEvents;
   };
 
+  const allInstances = getAllEventInstances();
+  console.log('Returning from useEvents:', {
+    events: allInstances,
+    baseEvents: events,
+    isLoading,
+    eventsCount: allInstances.length
+  });
+
   return {
-    events: getAllEventInstances(),
+    events: allInstances,
     baseEvents: events, // Original events without instances
     isLoading,
     addEvent,
