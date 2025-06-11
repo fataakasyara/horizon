@@ -9,10 +9,6 @@ export interface Event {
   category?: string;
   isNotificationEnabled: boolean;
   notificationTime: number; // minutes before event
-  recurrence: {
-    type: 'none' | 'weekly';
-    endDate?: string; // ISO string format, optional end date for recurring events
-  };
   createdAt: string;
   updatedAt: string;
 }

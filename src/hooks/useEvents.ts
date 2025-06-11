@@ -9,85 +9,13 @@ export const useEvents = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  console.log('useEvents hook initialized');
-
-  // Helper function to get base event ID from recurring event ID
-  const getBaseEventId = (eventId: string): string => {
-    return eventId.split('-')[0];
-  };
-
-  // Check if an event ID is from a recurring instance
-  const isRecurringInstance = (eventId: string): boolean => {
-    return eventId.includes('-') && eventId.split('-').length >= 2;
-  };
-
-  // Generate recurring event instances
-  const generateRecurringEvents = (baseEvent: Event): Event[] => {
-    console.log('Generating recurring events for:', baseEvent.title);
-    
-    if (baseEvent.recurrence.type === 'none') {
-      return [baseEvent];
-    }
-
-    const instances: Event[] = [];
-    const startDate = new Date(baseEvent.date);
-    const endDate = baseEvent.recurrence.endDate 
-      ? new Date(baseEvent.recurrence.endDate) 
-      : new Date(Date.now() + (365 * 24 * 60 * 60 * 1000)); // 1 year from now
-
-    let currentDate = new Date(startDate);
-
-    while (currentDate <= endDate) {
-      instances.push({
-        ...baseEvent,
-        id: `${baseEvent.id}-${currentDate.toISOString().split('T')[0]}`,
-        date: currentDate.toISOString().split('T')[0]
-      });
-
-      if (baseEvent.recurrence.type === 'weekly') {
-        currentDate.setDate(currentDate.getDate() + 7);
-      }
-    }
-
-    console.log(`Generated ${instances.length} instances for ${baseEvent.title}`);
-    return instances;
-  };
-
-  // Get all event instances including recurring ones
-  const getAllEventInstances = (): Event[] => {
-    const allInstances: Event[] = [];
-    
-    events.forEach(event => {
-      const instances = generateRecurringEvents(event);
-      allInstances.push(...instances);
-    });
-
-    console.log('Total event instances:', allInstances.length);
-    return allInstances;
-  };
-
   // Load events from localStorage on mount
   useEffect(() => {
-    console.log('Loading events from localStorage');
-    
     try {
       const savedEvents = localStorage.getItem(STORAGE_KEY);
-      console.log('Saved events from localStorage:', savedEvents);
-      
       if (savedEvents) {
         const parsedEvents = JSON.parse(savedEvents) as Event[];
-        console.log('Parsed events:', parsedEvents);
-        
-        // Migrate old events to new format
-        const migratedEvents = parsedEvents.map(event => ({
-          ...event,
-          recurrence: event.recurrence || { type: 'none' as const }
-        }));
-        
-        console.log('Migrated events:', migratedEvents);
-        setEvents(migratedEvents);
-      } else {
-        console.log('No saved events found in localStorage');
+        setEvents(parsedEvents);
       }
     } catch (error) {
       console.error('Error loading events from storage:', error);
@@ -97,7 +25,6 @@ export const useEvents = () => {
         variant: "destructive"
       });
     } finally {
-      console.log('Setting isLoading to false');
       setIsLoading(false);
     }
   }, []);
@@ -105,10 +32,8 @@ export const useEvents = () => {
   // Save events to localStorage whenever events change
   useEffect(() => {
     if (!isLoading) {
-      console.log('Saving events to localStorage:', events);
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
-        console.log('Events saved successfully');
       } catch (error) {
         console.error('Error saving events to storage:', error);
         toast({
@@ -121,45 +46,26 @@ export const useEvents = () => {
   }, [events, isLoading]);
 
   const addEvent = (eventData: Omit<Event, 'id' | 'createdAt' | 'updatedAt'>): Event => {
-    console.log('Adding event:', eventData);
-    
     const newEvent: Event = {
       ...eventData,
       id: crypto.randomUUID(),
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      recurrence: eventData.recurrence || { type: 'none' }
+      updatedAt: new Date().toISOString()
     };
 
-    console.log('New event created:', newEvent);
-    setEvents(prev => {
-      const updated = [...prev, newEvent];
-      console.log('Updated events array:', updated);
-      return updated;
-    });
+    setEvents(prev => [...prev, newEvent]);
     
-    const recurringText = newEvent.recurrence.type === 'weekly' ? ' (berulang mingguan)' : '';
     toast({
       title: "Acara ditambahkan",
-      description: `${newEvent.title}${recurringText} berhasil ditambahkan ke jadwal.`,
+      description: `${newEvent.title} berhasil ditambahkan ke jadwal.`,
     });
 
     return newEvent;
   };
 
   const updateEvent = (id: string, updates: Partial<Omit<Event, 'id' | 'createdAt'>>): Event | null => {
-    console.log('Updating event with ID:', id, 'Updates:', updates);
-    console.log('Current events:', events.map(e => ({ id: e.id, title: e.title })));
-    
-    // For recurring instances, get the base ID
-    const baseId = isRecurringInstance(id) ? getBaseEventId(id) : id;
-    console.log('Looking for base ID:', baseId);
-    
-    const eventIndex = events.findIndex(e => e.id === baseId);
-    console.log('Found event at index:', eventIndex);
-    
+    const eventIndex = events.findIndex(e => e.id === id);
     if (eventIndex === -1) {
-      console.error('Event not found with base ID:', baseId);
       toast({
         title: "Error",
         description: "Acara tidak ditemukan.",
@@ -174,12 +80,7 @@ export const useEvents = () => {
       updatedAt: new Date().toISOString()
     };
 
-    console.log('Updated event:', updatedEvent);
-    setEvents(prev => {
-      const newEvents = prev.map(e => e.id === baseId ? updatedEvent : e);
-      console.log('New events array after update:', newEvents.map(e => ({ id: e.id, title: e.title })));
-      return newEvents;
-    });
+    setEvents(prev => prev.map(e => e.id === id ? updatedEvent : e));
     
     toast({
       title: "Acara diperbarui",
@@ -190,18 +91,8 @@ export const useEvents = () => {
   };
 
   const deleteEvent = (id: string): boolean => {
-    console.log('Deleting event with ID:', id);
-    console.log('Current events:', events.map(e => ({ id: e.id, title: e.title })));
-    
-    // For recurring instances, get the base ID
-    const baseId = isRecurringInstance(id) ? getBaseEventId(id) : id;
-    console.log('Looking for base ID to delete:', baseId);
-    
-    const event = events.find(e => e.id === baseId);
-    console.log('Found event to delete:', event ? { id: event.id, title: event.title } : 'NOT FOUND');
-    
+    const event = events.find(e => e.id === id);
     if (!event) {
-      console.error('Event not found for deletion with base ID:', baseId);
       toast({
         title: "Error",
         description: "Acara tidak ditemukan.",
@@ -210,31 +101,23 @@ export const useEvents = () => {
       return false;
     }
 
-    setEvents(prev => {
-      const newEvents = prev.filter(e => e.id !== baseId);
-      console.log('Events after deletion:', newEvents.map(e => ({ id: e.id, title: e.title })));
-      return newEvents;
-    });
+    setEvents(prev => prev.filter(e => e.id !== id));
     
-    const recurringText = event.recurrence.type === 'weekly' ? ' (termasuk semua pengulangan)' : '';
     toast({
       title: "Acara dihapus",
-      description: `${event.title}${recurringText} berhasil dihapus dari jadwal.`,
+      description: `${event.title} berhasil dihapus dari jadwal.`,
     });
 
     return true;
   };
 
   const getEventById = (id: string): Event | undefined => {
-    const baseId = isRecurringInstance(id) ? getBaseEventId(id) : id;
-    return events.find(e => e.id === baseId);
+    return events.find(e => e.id === id);
   };
 
   const getUpcomingEvents = (): Event[] => {
     const now = new Date();
-    const allInstances = getAllEventInstances();
-    
-    const upcoming = allInstances
+    return events
       .filter(event => {
         const eventDateTime = new Date(`${event.date}T${event.time}`);
         return eventDateTime > now;
@@ -243,36 +126,18 @@ export const useEvents = () => {
         const dateA = new Date(`${a.date}T${a.time}`);
         const dateB = new Date(`${b.date}T${b.time}`);
         return dateA.getTime() - dateB.getTime();
-      })
-      .slice(0, 50); // Limit to 50 upcoming events
-    
-    console.log('Upcoming events:', upcoming);
-    return upcoming;
+      });
   };
 
   const getTodayEvents = (): Event[] => {
     const today = new Date().toISOString().split('T')[0];
-    const allInstances = getAllEventInstances();
-    
-    const todayEvents = allInstances
+    return events
       .filter(event => event.date === today)
       .sort((a, b) => a.time.localeCompare(b.time));
-    
-    console.log('Today events:', todayEvents);
-    return todayEvents;
   };
 
-  const allInstances = getAllEventInstances();
-  console.log('Returning from useEvents:', {
-    events: allInstances,
-    baseEvents: events,
-    isLoading,
-    eventsCount: allInstances.length
-  });
-
   return {
-    events: allInstances,
-    baseEvents: events, // Original events without instances
+    events,
     isLoading,
     addEvent,
     updateEvent,

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Event } from '@/types/event';
 import { useEvents } from '@/hooks/useEvents';
@@ -11,24 +10,16 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Plus, Search, Calendar, Clock, Bell, Home, Filter } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
 export const Dashboard = () => {
-  console.log('Dashboard component is rendering');
-  const navigate = useNavigate();
-  
   const { 
     events, 
     addEvent, 
     updateEvent, 
     deleteEvent, 
     getUpcomingEvents, 
-    getTodayEvents,
-    isLoading
+    getTodayEvents 
   } = useEvents();
-  
-  console.log('Events from useEvents:', events);
-  console.log('IsLoading from useEvents:', isLoading);
   
   const { requestPermission, scheduleNotification } = useNotifications();
   
@@ -38,17 +29,13 @@ export const Dashboard = () => {
   const [filterCategory, setFilterCategory] = useState('all');
   const [activeTab, setActiveTab] = useState('all');
 
-  console.log('Dashboard state:', { showForm, searchTerm, filterCategory, activeTab });
-
   // Request notification permission on mount
   useEffect(() => {
-    console.log('Requesting notification permission');
     requestPermission();
   }, [requestPermission]);
 
   // Schedule notifications for new events
   useEffect(() => {
-    console.log('Scheduling notifications for events:', events);
     events.forEach(event => {
       if (event.isNotificationEnabled) {
         scheduleNotification(event);
@@ -57,7 +44,6 @@ export const Dashboard = () => {
   }, [events, scheduleNotification]);
 
   const handleAddEvent = (eventData: Omit<Event, 'id' | 'createdAt' | 'updatedAt'>) => {
-    console.log('Adding new event:', eventData);
     const newEvent = addEvent(eventData);
     if (newEvent.isNotificationEnabled) {
       scheduleNotification(newEvent);
@@ -67,7 +53,6 @@ export const Dashboard = () => {
 
   const handleUpdateEvent = (eventData: Omit<Event, 'id' | 'createdAt' | 'updatedAt'>) => {
     if (editingEvent) {
-      console.log('Updating event:', editingEvent.id, eventData);
       const updatedEvent = updateEvent(editingEvent.id, eventData);
       if (updatedEvent?.isNotificationEnabled) {
         scheduleNotification(updatedEvent);
@@ -79,7 +64,6 @@ export const Dashboard = () => {
 
   const handleDeleteEvent = (id: string) => {
     if (window.confirm('Apakah Anda yakin ingin menghapus acara ini?')) {
-      console.log('Deleting event:', id);
       deleteEvent(id);
     }
   };
@@ -87,7 +71,6 @@ export const Dashboard = () => {
   const handleToggleNotification = (id: string) => {
     const event = events.find(e => e.id === id);
     if (event) {
-      console.log('Toggling notification for event:', id);
       const updatedEvent = updateEvent(id, { 
         isNotificationEnabled: !event.isNotificationEnabled 
       });
@@ -98,14 +81,8 @@ export const Dashboard = () => {
   };
 
   const handleEditEvent = (event: Event) => {
-    console.log('Editing event:', event);
     setEditingEvent(event);
     setShowForm(true);
-  };
-
-  const handleGoHome = () => {
-    console.log('Navigating to home');
-    navigate('/');
   };
 
   const filteredEvents = events.filter(event => {
@@ -118,43 +95,32 @@ export const Dashboard = () => {
     return matchesSearch && matchesCategory;
   });
 
-  console.log('Filtered events:', filteredEvents);
-
   const getEventsForTab = () => {
     switch (activeTab) {
       case 'today':
-        const todayEvents = getTodayEvents().filter(event => {
+        return getTodayEvents().filter(event => {
           const matchesSearch = event.title.toLowerCase().includes(searchTerm.toLowerCase());
           const matchesCategory = filterCategory === 'all' || event.category === filterCategory;
           return matchesSearch && matchesCategory;
         });
-        console.log('Today events:', todayEvents);
-        return todayEvents;
       case 'upcoming':
-        const upcomingEvents = getUpcomingEvents().filter(event => {
+        return getUpcomingEvents().filter(event => {
           const matchesSearch = event.title.toLowerCase().includes(searchTerm.toLowerCase());
           const matchesCategory = filterCategory === 'all' || event.category === filterCategory;
           return matchesSearch && matchesCategory;
         });
-        console.log('Upcoming events:', upcomingEvents);
-        return upcomingEvents;
       default:
-        const sortedEvents = filteredEvents.sort((a, b) => {
+        return filteredEvents.sort((a, b) => {
           const dateA = new Date(`${a.date}T${a.time}`);
           const dateB = new Date(`${b.date}T${b.time}`);
           return dateA.getTime() - dateB.getTime();
         });
-        console.log('All sorted events:', sortedEvents);
-        return sortedEvents;
     }
   };
 
-  console.log('ShowForm state:', showForm);
-
   if (showForm) {
-    console.log('Rendering EventForm');
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-yellow-50 py-8 px-4">
+      <div className="min-h-screen bg-gradient-to-br from-horizon-purple-50 via-white to-horizon-yellow-50 py-8 px-4">
         <OfflineIndicator />
         <EventForm
           event={editingEvent || undefined}
@@ -168,31 +134,12 @@ export const Dashboard = () => {
     );
   }
 
-  console.log('Rendering main dashboard');
-  
-  if (isLoading) {
-    console.log('Dashboard is in loading state');
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-yellow-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-100 to-yellow-100 flex items-center justify-center animate-spin">
-            <Calendar className="h-8 w-8 text-purple-400" />
-          </div>
-          <p className="text-gray-600">Memuat dashboard...</p>
-        </div>
-      </div>
-    );
-  }
-
-  const eventsForTab = getEventsForTab();
-  console.log('Events for current tab:', eventsForTab);
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-horizon-purple-50 via-white to-horizon-yellow-50">
       <OfflineIndicator />
       
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-500 via-purple-600 to-yellow-500 text-white py-12 px-4">
+      <div className="bg-gradient-to-r from-horizon-purple-500 via-horizon-purple-600 to-horizon-yellow-500 text-white py-12 px-4">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <div className="space-y-2">
@@ -200,7 +147,7 @@ export const Dashboard = () => {
               <p className="text-purple-100 text-lg">Kelola jadwal acara dengan mudah</p>
             </div>
             <Button
-              onClick={handleGoHome}
+              onClick={() => window.location.href = '/'}
               variant="outline"
               className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm rounded-full px-6 py-3 transition-all duration-300 hover:scale-105"
             >
@@ -245,7 +192,7 @@ export const Dashboard = () => {
             <div className="lg:col-span-3">
               <Button
                 onClick={() => setShowForm(true)}
-                className="w-full bg-white text-purple-600 hover:bg-gray-100 font-semibold rounded-full h-12 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                className="w-full bg-white text-horizon-purple-600 hover:bg-gray-100 font-semibold rounded-full h-12 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
               >
                 <Plus className="h-5 w-5 mr-2" />
                 Tambah Acara
@@ -261,21 +208,21 @@ export const Dashboard = () => {
           <TabsList className="grid w-full grid-cols-3 bg-white/60 backdrop-blur-sm border-0 shadow-lg rounded-2xl p-2">
             <TabsTrigger 
               value="all" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
             >
               <Calendar className="h-4 w-4 mr-2" />
               Semua Acara
             </TabsTrigger>
             <TabsTrigger 
               value="today" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
             >
               <Clock className="h-4 w-4 mr-2" />
               Hari Ini
             </TabsTrigger>
             <TabsTrigger 
               value="upcoming" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
             >
               <Bell className="h-4 w-4 mr-2" />
               Mendatang
@@ -283,10 +230,10 @@ export const Dashboard = () => {
           </TabsList>
 
           <TabsContent value={activeTab}>
-            {eventsForTab.length === 0 ? (
+            {getEventsForTab().length === 0 ? (
               <div className="text-center py-16">
-                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-purple-100 to-yellow-100 flex items-center justify-center">
-                  <Calendar className="h-12 w-12 text-purple-400" />
+                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-horizon-purple-100 to-horizon-yellow-100 flex items-center justify-center">
+                  <Calendar className="h-12 w-12 text-horizon-purple-400" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-700 mb-4">
                   {activeTab === 'today' ? 'Tidak ada acara hari ini' :
@@ -302,7 +249,7 @@ export const Dashboard = () => {
                 {(!searchTerm && filterCategory === 'all') && (
                   <Button
                     onClick={() => setShowForm(true)}
-                    className="bg-gradient-to-r from-purple-500 to-yellow-500 hover:from-purple-600 hover:to-yellow-600 text-white border-0 shadow-lg rounded-full px-8 py-3 font-semibold transition-all duration-300 hover:scale-105"
+                    className="bg-gradient-to-r from-horizon-purple-500 to-horizon-yellow-500 hover:from-horizon-purple-600 hover:to-horizon-yellow-600 text-white border-0 shadow-lg rounded-full px-8 py-3 font-semibold transition-all duration-300 hover:scale-105"
                   >
                     <Plus className="h-5 w-5 mr-2" />
                     Tambah Acara Pertama
@@ -311,7 +258,7 @@ export const Dashboard = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {eventsForTab.map(event => (
+                {getEventsForTab().map(event => (
                   <EventCard
                     key={event.id}
                     event={event}
