@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Event } from '@/types/event';
 import { toast } from '@/hooks/use-toast';
@@ -147,14 +148,18 @@ export const useEvents = () => {
   };
 
   const updateEvent = (id: string, updates: Partial<Omit<Event, 'id' | 'createdAt'>>): Event | null => {
-    console.log('Updating event:', id, updates);
+    console.log('Updating event with ID:', id, 'Updates:', updates);
+    console.log('Current events:', events.map(e => ({ id: e.id, title: e.title })));
     
-    // Get the correct event ID to search for
-    const searchId = isRecurringInstance(id) ? getBaseEventId(id) : id;
-    const eventIndex = events.findIndex(e => e.id === searchId);
+    // For recurring instances, get the base ID
+    const baseId = isRecurringInstance(id) ? getBaseEventId(id) : id;
+    console.log('Looking for base ID:', baseId);
+    
+    const eventIndex = events.findIndex(e => e.id === baseId);
+    console.log('Found event at index:', eventIndex);
     
     if (eventIndex === -1) {
-      console.error('Event not found:', searchId);
+      console.error('Event not found with base ID:', baseId);
       toast({
         title: "Error",
         description: "Acara tidak ditemukan.",
@@ -170,7 +175,11 @@ export const useEvents = () => {
     };
 
     console.log('Updated event:', updatedEvent);
-    setEvents(prev => prev.map(e => e.id === searchId ? updatedEvent : e));
+    setEvents(prev => {
+      const newEvents = prev.map(e => e.id === baseId ? updatedEvent : e);
+      console.log('New events array after update:', newEvents.map(e => ({ id: e.id, title: e.title })));
+      return newEvents;
+    });
     
     toast({
       title: "Acara diperbarui",
@@ -181,14 +190,18 @@ export const useEvents = () => {
   };
 
   const deleteEvent = (id: string): boolean => {
-    console.log('Deleting event:', id);
+    console.log('Deleting event with ID:', id);
+    console.log('Current events:', events.map(e => ({ id: e.id, title: e.title })));
     
-    // Get the correct event ID to search for
-    const searchId = isRecurringInstance(id) ? getBaseEventId(id) : id;
-    const event = events.find(e => e.id === searchId);
+    // For recurring instances, get the base ID
+    const baseId = isRecurringInstance(id) ? getBaseEventId(id) : id;
+    console.log('Looking for base ID to delete:', baseId);
+    
+    const event = events.find(e => e.id === baseId);
+    console.log('Found event to delete:', event ? { id: event.id, title: event.title } : 'NOT FOUND');
     
     if (!event) {
-      console.error('Event not found for deletion:', searchId);
+      console.error('Event not found for deletion with base ID:', baseId);
       toast({
         title: "Error",
         description: "Acara tidak ditemukan.",
@@ -197,7 +210,11 @@ export const useEvents = () => {
       return false;
     }
 
-    setEvents(prev => prev.filter(e => e.id !== searchId));
+    setEvents(prev => {
+      const newEvents = prev.filter(e => e.id !== baseId);
+      console.log('Events after deletion:', newEvents.map(e => ({ id: e.id, title: e.title })));
+      return newEvents;
+    });
     
     const recurringText = event.recurrence.type === 'weekly' ? ' (termasuk semua pengulangan)' : '';
     toast({
@@ -209,8 +226,8 @@ export const useEvents = () => {
   };
 
   const getEventById = (id: string): Event | undefined => {
-    const searchId = isRecurringInstance(id) ? getBaseEventId(id) : id;
-    return events.find(e => e.id === searchId);
+    const baseId = isRecurringInstance(id) ? getBaseEventId(id) : id;
+    return events.find(e => e.id === baseId);
   };
 
   const getUpcomingEvents = (): Event[] => {
