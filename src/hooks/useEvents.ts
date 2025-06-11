@@ -11,6 +11,11 @@ export const useEvents = () => {
 
   console.log('useEvents hook initialized');
 
+  // Helper function to get base event ID from recurring event ID
+  const getBaseEventId = (eventId: string): string => {
+    return eventId.split('-')[0];
+  };
+
   // Generate recurring event instances
   const generateRecurringEvents = (baseEvent: Event): Event[] => {
     console.log('Generating recurring events for:', baseEvent.title);
@@ -140,9 +145,12 @@ export const useEvents = () => {
   const updateEvent = (id: string, updates: Partial<Omit<Event, 'id' | 'createdAt'>>): Event | null => {
     console.log('Updating event:', id, updates);
     
-    const eventIndex = events.findIndex(e => e.id === id);
+    // Get base event ID for recurring events
+    const baseEventId = getBaseEventId(id);
+    const eventIndex = events.findIndex(e => e.id === baseEventId);
+    
     if (eventIndex === -1) {
-      console.error('Event not found:', id);
+      console.error('Event not found:', baseEventId);
       toast({
         title: "Error",
         description: "Acara tidak ditemukan.",
@@ -158,7 +166,7 @@ export const useEvents = () => {
     };
 
     console.log('Updated event:', updatedEvent);
-    setEvents(prev => prev.map(e => e.id === id ? updatedEvent : e));
+    setEvents(prev => prev.map(e => e.id === baseEventId ? updatedEvent : e));
     
     toast({
       title: "Acara diperbarui",
@@ -171,9 +179,12 @@ export const useEvents = () => {
   const deleteEvent = (id: string): boolean => {
     console.log('Deleting event:', id);
     
-    const event = events.find(e => e.id === id);
+    // Get base event ID for recurring events
+    const baseEventId = getBaseEventId(id);
+    const event = events.find(e => e.id === baseEventId);
+    
     if (!event) {
-      console.error('Event not found for deletion:', id);
+      console.error('Event not found for deletion:', baseEventId);
       toast({
         title: "Error",
         description: "Acara tidak ditemukan.",
@@ -182,18 +193,20 @@ export const useEvents = () => {
       return false;
     }
 
-    setEvents(prev => prev.filter(e => e.id !== id));
+    setEvents(prev => prev.filter(e => e.id !== baseEventId));
     
+    const recurringText = event.recurrence.type === 'weekly' ? ' (termasuk semua pengulangan)' : '';
     toast({
       title: "Acara dihapus",
-      description: `${event.title} berhasil dihapus dari jadwal.`,
+      description: `${event.title}${recurringText} berhasil dihapus dari jadwal.`,
     });
 
     return true;
   };
 
   const getEventById = (id: string): Event | undefined => {
-    return events.find(e => e.id === id);
+    const baseEventId = getBaseEventId(id);
+    return events.find(e => e.id === baseEventId);
   };
 
   const getUpcomingEvents = (): Event[] => {

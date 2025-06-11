@@ -39,13 +39,22 @@ const Index = () => {
 
   const handleNavigateToDashboard = () => {
     console.log('Navigating to dashboard');
-    navigate('/dashboard');
+    try {
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Navigation error:', error);
+      window.location.href = '/dashboard';
+    }
   };
 
   const scrollToFeatures = () => {
-    const featuresElement = document.getElementById('features');
-    if (featuresElement) {
-      featuresElement.scrollIntoView({ behavior: 'smooth' });
+    try {
+      const featuresElement = document.getElementById('features');
+      if (featuresElement) {
+        featuresElement.scrollIntoView({ behavior: 'smooth' });
+      }
+    } catch (error) {
+      console.error('Scroll error:', error);
     }
   };
 
