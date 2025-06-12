@@ -44,9 +44,7 @@ const Index = () => {
       }}></div>
         
         <div className="relative max-w-4xl mx-auto text-center space-y-8">
-          <Badge className="bg-white/80 text-horizon-purple-700 border-0 shadow-lg backdrop-blur-sm px-6 py-2 text-sm font-medium hover:scale-105 transition-transform duration-300">
-            ✨ Horizon Event Scheduler
-          </Badge>
+          
           
           <div className="space-y-6">
             <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 bg-clip-text text-transparent animate-fade-in">
