@@ -1,139 +1,257 @@
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { OfflineIndicator } from '@/components/OfflineIndicator';
-import { Calendar, Clock, Bell, Wifi, Smartphone, Star, ArrowRight } from 'lucide-react';
+import { Calendar, Clock, Bell, Wifi, Smartphone, Star, ArrowRight, Zap, Shield, Globe } from 'lucide-react';
+
 const Index = () => {
-  const features = [{
-    icon: <Calendar className="h-6 w-6" />,
-    title: "Manajemen Acara",
-    description: "Tambah, edit, dan hapus acara dengan mudah"
-  }, {
-    icon: <Clock className="h-6 w-6" />,
-    title: "Countdown Timer",
-    description: "Hitung mundur waktu menuju acara penting"
-  }, {
-    icon: <Wifi className="h-6 w-6" />,
-    title: "Mode Offline",
-    description: "Akses jadwal tanpa internet"
-  }, {
-    icon: <Bell className="h-6 w-6" />,
-    title: "Notifikasi Real-time",
-    description: "Terima notifikasi langsung"
-  }, {
-    icon: <Smartphone className="h-6 w-6" />,
-    title: "Responsive Design",
-    description: "Bekerja di semua perangkat"
-  }, {
-    icon: <Star className="h-6 w-6" />,
-    title: "User Friendly",
-    description: "Interface yang intuitif"
-  }];
-  return <div className="min-h-screen">
+  const features = [
+    {
+      icon: <Calendar className="h-6 w-6" />,
+      title: "Event Management",
+      description: "Organize your schedule with precision and style"
+    },
+    {
+      icon: <Zap className="h-6 w-6" />,
+      title: "Real-time Sync",
+      description: "Instant updates across all your devices"
+    },
+    {
+      icon: <Shield className="h-6 w-6" />,
+      title: "Offline First",
+      description: "Works seamlessly without internet connection"
+    },
+    {
+      icon: <Bell className="h-6 w-6" />,
+      title: "Smart Alerts",
+      description: "Never miss important moments again"
+    },
+    {
+      icon: <Globe className="h-6 w-6" />,
+      title: "Universal Access",
+      description: "Access from anywhere, anytime"
+    },
+    {
+      icon: <Star className="h-6 w-6" />,
+      title: "Premium Experience",
+      description: "Crafted for productivity enthusiasts"
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-white">
       <OfflineIndicator />
       
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-4">
-        {/* Background Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-horizon-purple-50 via-white to-horizon-yellow-50"></div>
-        
-        {/* Floating Elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-horizon-purple-200 rounded-full blur-xl opacity-60 animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-32 h-32 bg-horizon-yellow-200 rounded-full blur-xl opacity-60 animate-pulse" style={{
-        animationDelay: '1s'
-      }}></div>
-        
-        <div className="relative max-w-4xl mx-auto text-center space-y-8">
-          
-          
-          <div className="space-y-6">
-            <h1 className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 bg-clip-text text-transparent animate-fade-in">
-              Horizon
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-              Platform manajemen jadwal acara modern dengan teknologi offline-first
-            </p>
-          </div>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button size="lg" className="group bg-gradient-to-r from-horizon-purple-500 to-horizon-yellow-500 hover:from-horizon-purple-600 hover:to-horizon-yellow-600 text-white border-0 shadow-xl px-8 py-6 text-lg font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-2xl" onClick={() => window.location.href = '/dashboard'}>
-              <Calendar className="h-5 w-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-              Mulai Sekarang
-              <ArrowRight className="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
-            </Button>
-            <Button size="lg" variant="outline" className="border-2 border-horizon-purple-300 text-horizon-purple-700 hover:bg-horizon-purple-50 px-8 py-6 text-lg font-semibold rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg bg-white/80 backdrop-blur-sm" onClick={() => document.getElementById('features')?.scrollIntoView({
-            behavior: 'smooth'
-          })}>
-              Lihat Fitur
+      {/* Navigation */}
+      <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="text-2xl font-black bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 bg-clip-text text-transparent">
+              HORIZON
+            </div>
+            <Button 
+              onClick={() => window.location.href = '/dashboard'}
+              className="bg-horizon-purple-600 hover:bg-horizon-purple-700 text-white px-6 py-2 rounded-full"
+            >
+              Launch App
             </Button>
           </div>
+        </div>
+      </nav>
 
-          {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8">
-            {[{
-            value: "100%",
-            label: "Offline Support"
-          }, {
-            value: "Real-time",
-            label: "Notifications"
-          }, {
-            value: "All Devices",
-            label: "Responsive"
-          }].map((stat, index) => <div key={index} className="group p-6 rounded-2xl bg-white/60 backdrop-blur-sm border border-white/40 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
-                <div className="text-2xl font-bold bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-600 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
-                  {stat.value}
+      {/* Hero Section */}
+      <section className="pt-32 pb-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-8">
+              <div className="space-y-6">
+                <Badge className="bg-horizon-yellow-100 text-horizon-yellow-800 border-0 px-4 py-2 rounded-full">
+                  ✨ Next-Gen Scheduling
+                </Badge>
+                <h1 className="text-5xl md:text-7xl font-black leading-tight">
+                  <span className="text-gray-900">Schedule</span>
+                  <br />
+                  <span className="bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 bg-clip-text text-transparent">
+                    Simplified
+                  </span>
+                </h1>
+                <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
+                  Revolutionary event management platform designed for the modern lifestyle. 
+                  Beautiful, fast, and intelligent.
+                </p>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Button 
+                  size="lg" 
+                  onClick={() => window.location.href = '/dashboard'}
+                  className="bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 hover:from-horizon-purple-700 hover:to-horizon-yellow-600 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
+                >
+                  Get Started
+                  <ArrowRight className="h-5 w-5 ml-2" />
+                </Button>
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="border-2 border-gray-300 text-gray-700 hover:border-horizon-purple-300 hover:text-horizon-purple-700 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300"
+                >
+                  Explore Features
+                </Button>
+              </div>
+
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-8 pt-8">
+                <div className="text-center">
+                  <div className="text-3xl font-black text-horizon-purple-600">100%</div>
+                  <div className="text-sm text-gray-500 font-medium">Offline Ready</div>
                 </div>
-                <div className="text-gray-600 font-medium">{stat.label}</div>
-              </div>)}
+                <div className="text-center">
+                  <div className="text-3xl font-black text-horizon-yellow-600">∞</div>
+                  <div className="text-sm text-gray-500 font-medium">Events</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-black text-horizon-purple-600">24/7</div>
+                  <div className="text-sm text-gray-500 font-medium">Available</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Hero Visual */}
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-horizon-purple-100 to-horizon-yellow-100 rounded-3xl transform rotate-3"></div>
+              <div className="relative bg-white rounded-3xl shadow-2xl p-8 border border-gray-100">
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div className="text-lg font-bold text-gray-800">Today's Schedule</div>
+                    <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                  </div>
+                  
+                  {[
+                    { time: "09:00", title: "Team Meeting", color: "horizon-purple" },
+                    { time: "11:30", title: "Project Review", color: "horizon-yellow" },
+                    { time: "14:00", title: "Client Call", color: "horizon-purple" },
+                  ].map((event, i) => (
+                    <div key={i} className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
+                      <div className={`w-4 h-4 bg-${event.color}-500 rounded-full`}></div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-gray-800">{event.title}</div>
+                        <div className="text-sm text-gray-500">{event.time}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-24 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16 space-y-4">
-            <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-600 bg-clip-text text-transparent">
-              Fitur Unggulan
+      <section id="features" className="py-20 px-4 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+              Powerful Features
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Didesain untuk kemudahan dan efisiensi maksimal
+              Everything you need to manage your time effectively
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => <div key={index} className="group p-8 rounded-3xl bg-gradient-to-br from-white to-gray-50 border border-gray-100 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 cursor-pointer" style={{
-            animationDelay: `${index * 0.1}s`
-          }}>
-                <div className="space-y-4">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-horizon-purple-100 to-horizon-yellow-100 flex items-center justify-center text-horizon-purple-600 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                    {feature.icon}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-3xl bg-white">
+                <CardContent className="p-8">
+                  <div className="space-y-4">
+                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${
+                      index % 2 === 0 
+                        ? 'from-horizon-purple-500 to-horizon-purple-600' 
+                        : 'from-horizon-yellow-400 to-horizon-yellow-500'
+                    } flex items-center justify-center text-white`}>
+                      {feature.icon}
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {feature.description}
+                    </p>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-800 group-hover:text-horizon-purple-700 transition-colors duration-300">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {feature.description}
-                  </p>
-                </div>
-              </div>)}
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 rounded-3xl p-12 text-white">
+            <h2 className="text-4xl md:text-5xl font-black mb-6">
+              Ready to Transform Your Schedule?
+            </h2>
+            <p className="text-xl mb-8 opacity-90">
+              Join thousands who've already revolutionized their time management
+            </p>
+            <Button 
+              size="lg"
+              onClick={() => window.location.href = '/dashboard'}
+              className="bg-white text-horizon-purple-600 hover:bg-gray-100 px-8 py-4 rounded-full text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
+            >
+              Start Your Journey
+              <ArrowRight className="h-5 w-5 ml-2" />
+            </Button>
+          </div>
+        </div>
+      </section>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-r from-horizon-purple-800 to-horizon-purple-900 text-white py-12 px-4">
-        <div className="max-w-4xl mx-auto text-center space-y-4">
-          <h3 className="text-2xl font-bold">NotifMeHorizon</h3>
-          <p className="text-purple-200">
-            Mengelola jadwal dengan teknologi terdepan
-          </p>
-          <div className="text-purple-300 text-sm">© 2024 Notify Me Horizon.</div>
+      <footer className="bg-gray-900 text-white py-12 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div className="space-y-4">
+              <div className="text-2xl font-black bg-gradient-to-r from-horizon-purple-400 to-horizon-yellow-400 bg-clip-text text-transparent">
+                HORIZON
+              </div>
+              <p className="text-gray-400">
+                Next-generation scheduling platform for modern professionals.
+              </p>
+            </div>
+            <div className="space-y-4">
+              <h4 className="font-bold">Product</h4>
+              <div className="space-y-2 text-gray-400">
+                <div>Features</div>
+                <div>Pricing</div>
+                <div>Updates</div>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <h4 className="font-bold">Company</h4>
+              <div className="space-y-2 text-gray-400">
+                <div>About</div>
+                <div>Blog</div>
+                <div>Careers</div>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <h4 className="font-bold">Support</h4>
+              <div className="space-y-2 text-gray-400">
+                <div>Help Center</div>
+                <div>Contact</div>
+                <div>Status</div>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
+            <p>&copy; 2024 Horizon. All rights reserved.</p>
+          </div>
         </div>
       </footer>
-    </div>;
+    </div>
+  );
 };
+
 export default Index;
