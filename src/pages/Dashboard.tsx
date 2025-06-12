@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Event } from '@/types/event';
 import { useEvents } from '@/hooks/useEvents';
@@ -5,11 +6,16 @@ import { useNotifications } from '@/hooks/useNotifications';
 import { EventCard } from '@/components/EventCard';
 import { EventForm } from '@/components/EventForm';
 import { OfflineIndicator } from '@/components/OfflineIndicator';
+import { StatsCard } from '@/components/StatsCard';
+import { QuickActions } from '@/components/QuickActions';
+import { MiniCalendar } from '@/components/MiniCalendar';
+import { RecentActivity } from '@/components/RecentActivity';
+import { WeatherWidget } from '@/components/WeatherWidget';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, Search, Calendar, Clock, Bell, Home, Filter } from 'lucide-react';
+import { Plus, Search, Calendar, Clock, Bell, Home, Filter, Users, Target, TrendingUp, Zap } from 'lucide-react';
 
 export const Dashboard = () => {
   const { 
@@ -27,7 +33,7 @@ export const Dashboard = () => {
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
-  const [activeTab, setActiveTab] = useState('all');
+  const [activeTab, setActiveTab] = useState('overview');
 
   // Request notification permission on mount
   useEffect(() => {
@@ -109,14 +115,25 @@ export const Dashboard = () => {
           const matchesCategory = filterCategory === 'all' || event.category === filterCategory;
           return matchesSearch && matchesCategory;
         });
-      default:
+      case 'events':
         return filteredEvents.sort((a, b) => {
           const dateA = new Date(`${a.date}T${a.time}`);
           const dateB = new Date(`${b.date}T${b.time}`);
           return dateA.getTime() - dateB.getTime();
         });
+      default:
+        return [];
     }
   };
+
+  // Calculate stats
+  const todayEvents = getTodayEvents();
+  const upcomingEvents = getUpcomingEvents();
+  const totalEvents = events.length;
+  const completedEvents = events.filter(event => {
+    const eventDateTime = new Date(`${event.date}T${event.time}`);
+    return eventDateTime < new Date();
+  }).length;
 
   if (showForm) {
     return (
@@ -139,12 +156,12 @@ export const Dashboard = () => {
       <OfflineIndicator />
       
       {/* Header */}
-      <div className="bg-gradient-to-r from-horizon-purple-500 via-horizon-purple-600 to-horizon-yellow-500 text-white py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
+      <div className="bg-gradient-to-r from-horizon-purple-500 via-horizon-purple-600 to-horizon-yellow-500 text-white py-8 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between mb-6">
             <div className="space-y-2">
-              <h1 className="text-4xl md:text-5xl font-bold">Dashboard</h1>
-              <p className="text-purple-100 text-lg">Kelola jadwal acara dengan mudah</p>
+              <h1 className="text-3xl md:text-4xl font-bold">Dashboard</h1>
+              <p className="text-purple-100">Kelola jadwal acara dengan mudah</p>
             </div>
             <Button
               onClick={() => window.location.href = '/'}
@@ -155,59 +172,22 @@ export const Dashboard = () => {
               Beranda
             </Button>
           </div>
-          
-          {/* Search and Filters */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-            <div className="lg:col-span-6">
-              <div className="relative">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-white/60" />
-                <Input
-                  placeholder="Cari acara..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-12 bg-white/10 border-white/30 text-white placeholder:text-white/60 rounded-full h-12 backdrop-blur-sm focus:bg-white/20 transition-all duration-300"
-                />
-              </div>
-            </div>
-            
-            <div className="lg:col-span-3">
-              <Select value={filterCategory} onValueChange={setFilterCategory}>
-                <SelectTrigger className="bg-white/10 border-white/30 text-white rounded-full h-12 backdrop-blur-sm hover:bg-white/20 transition-all duration-300">
-                  <Filter className="h-4 w-4 mr-2" />
-                  <SelectValue placeholder="Kategori" />
-                </SelectTrigger>
-                <SelectContent className="bg-white rounded-2xl border-0 shadow-2xl">
-                  <SelectItem value="all">Semua Kategori</SelectItem>
-                  <SelectItem value="meeting">Meeting</SelectItem>
-                  <SelectItem value="personal">Personal</SelectItem>
-                  <SelectItem value="work">Pekerjaan</SelectItem>
-                  <SelectItem value="social">Sosial</SelectItem>
-                  <SelectItem value="health">Kesehatan</SelectItem>
-                  <SelectItem value="education">Pendidikan</SelectItem>
-                  <SelectItem value="other">Lainnya</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            
-            <div className="lg:col-span-3">
-              <Button
-                onClick={() => setShowForm(true)}
-                className="w-full bg-white text-horizon-purple-600 hover:bg-gray-100 font-semibold rounded-full h-12 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-              >
-                <Plus className="h-5 w-5 mr-2" />
-                Tambah Acara
-              </Button>
-            </div>
-          </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-6xl mx-auto py-8 px-4">
+      <div className="max-w-7xl mx-auto py-8 px-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-          <TabsList className="grid w-full grid-cols-3 bg-white/60 backdrop-blur-sm border-0 shadow-lg rounded-2xl p-2">
+          <TabsList className="grid w-full grid-cols-4 bg-white/60 backdrop-blur-sm border-0 shadow-lg rounded-2xl p-2">
             <TabsTrigger 
-              value="all" 
+              value="overview" 
+              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
+            >
+              <Target className="h-4 w-4 mr-2" />
+              Overview
+            </TabsTrigger>
+            <TabsTrigger 
+              value="events" 
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
             >
               <Calendar className="h-4 w-4 mr-2" />
@@ -229,46 +209,144 @@ export const Dashboard = () => {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value={activeTab}>
-            {getEventsForTab().length === 0 ? (
-              <div className="text-center py-16">
-                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-horizon-purple-100 to-horizon-yellow-100 flex items-center justify-center">
-                  <Calendar className="h-12 w-12 text-horizon-purple-400" />
+          {/* Overview Tab */}
+          <TabsContent value="overview">
+            <div className="space-y-8">
+              {/* Stats Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <StatsCard
+                  title="Total Acara"
+                  value={totalEvents}
+                  icon={Calendar}
+                  change="+12% dari bulan lalu"
+                  changeType="positive"
+                />
+                <StatsCard
+                  title="Acara Hari Ini"
+                  value={todayEvents.length}
+                  icon={Clock}
+                />
+                <StatsCard
+                  title="Acara Mendatang"
+                  value={upcomingEvents.length}
+                  icon={Bell}
+                  change="+5 acara minggu ini"
+                  changeType="positive"
+                />
+                <StatsCard
+                  title="Selesai"
+                  value={completedEvents}
+                  icon={TrendingUp}
+                  change="92% completion rate"
+                  changeType="positive"
+                />
+              </div>
+
+              {/* Main Content Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Left Column */}
+                <div className="lg:col-span-2 space-y-6">
+                  <QuickActions onAddEvent={() => setShowForm(true)} />
+                  <RecentActivity />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-700 mb-4">
-                  {activeTab === 'today' ? 'Tidak ada acara hari ini' :
-                   activeTab === 'upcoming' ? 'Tidak ada acara mendatang' :
-                   'Belum ada acara'}
-                </h3>
-                <p className="text-gray-500 mb-8 max-w-md mx-auto">
-                  {activeTab === 'today' ? 'Hari ini terlihat kosong. Nikmati waktu luang Anda!' :
-                   activeTab === 'upcoming' ? 'Tidak ada acara yang dijadwalkan untuk masa depan.' :
-                   searchTerm || filterCategory !== 'all' ? 'Coba ubah filter pencarian Anda.' :
-                   'Mulai dengan menambahkan acara pertama Anda.'}
-                </p>
-                {(!searchTerm && filterCategory === 'all') && (
+
+                {/* Right Column */}
+                <div className="space-y-6">
+                  <WeatherWidget />
+                  <MiniCalendar events={events.map(e => ({ date: e.date, title: e.title, category: e.category }))} />
+                </div>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Events Tabs */}
+          <TabsContent value={activeTab} className={activeTab === 'overview' ? 'hidden' : ''}>
+            <div className="space-y-6">
+              {/* Search and Filters */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                <div className="lg:col-span-6">
+                  <div className="relative">
+                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                    <Input
+                      placeholder="Cari acara..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-12 bg-white border-gray-200 rounded-full h-12 shadow-sm focus:shadow-md transition-all duration-300"
+                    />
+                  </div>
+                </div>
+                
+                <div className="lg:col-span-3">
+                  <Select value={filterCategory} onValueChange={setFilterCategory}>
+                    <SelectTrigger className="bg-white border-gray-200 rounded-full h-12 shadow-sm hover:shadow-md transition-all duration-300">
+                      <Filter className="h-4 w-4 mr-2" />
+                      <SelectValue placeholder="Kategori" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white rounded-2xl border-0 shadow-2xl">
+                      <SelectItem value="all">Semua Kategori</SelectItem>
+                      <SelectItem value="meeting">Meeting</SelectItem>
+                      <SelectItem value="personal">Personal</SelectItem>
+                      <SelectItem value="work">Pekerjaan</SelectItem>
+                      <SelectItem value="social">Sosial</SelectItem>
+                      <SelectItem value="health">Kesehatan</SelectItem>
+                      <SelectItem value="education">Pendidikan</SelectItem>
+                      <SelectItem value="other">Lainnya</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div className="lg:col-span-3">
                   <Button
                     onClick={() => setShowForm(true)}
-                    className="bg-gradient-to-r from-horizon-purple-500 to-horizon-yellow-500 hover:from-horizon-purple-600 hover:to-horizon-yellow-600 text-white border-0 shadow-lg rounded-full px-8 py-3 font-semibold transition-all duration-300 hover:scale-105"
+                    className="w-full bg-gradient-to-r from-horizon-purple-500 to-horizon-yellow-500 hover:from-horizon-purple-600 hover:to-horizon-yellow-600 text-white font-semibold rounded-full h-12 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                   >
                     <Plus className="h-5 w-5 mr-2" />
-                    Tambah Acara Pertama
+                    Tambah Acara
                   </Button>
-                )}
+                </div>
               </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {getEventsForTab().map(event => (
-                  <EventCard
-                    key={event.id}
-                    event={event}
-                    onEdit={handleEditEvent}
-                    onDelete={handleDeleteEvent}
-                    onToggleNotification={handleToggleNotification}
-                  />
-                ))}
-              </div>
-            )}
+
+              {/* Events Grid */}
+              {getEventsForTab().length === 0 ? (
+                <div className="text-center py-16">
+                  <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-horizon-purple-100 to-horizon-yellow-100 flex items-center justify-center">
+                    <Calendar className="h-12 w-12 text-horizon-purple-400" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-700 mb-4">
+                    {activeTab === 'today' ? 'Tidak ada acara hari ini' :
+                     activeTab === 'upcoming' ? 'Tidak ada acara mendatang' :
+                     'Belum ada acara'}
+                  </h3>
+                  <p className="text-gray-500 mb-8 max-w-md mx-auto">
+                    {activeTab === 'today' ? 'Hari ini terlihat kosong. Nikmati waktu luang Anda!' :
+                     activeTab === 'upcoming' ? 'Tidak ada acara yang dijadwalkan untuk masa depan.' :
+                     searchTerm || filterCategory !== 'all' ? 'Coba ubah filter pencarian Anda.' :
+                     'Mulai dengan menambahkan acara pertama Anda.'}
+                  </p>
+                  {(!searchTerm && filterCategory === 'all') && (
+                    <Button
+                      onClick={() => setShowForm(true)}
+                      className="bg-gradient-to-r from-horizon-purple-500 to-horizon-yellow-500 hover:from-horizon-purple-600 hover:to-horizon-yellow-600 text-white border-0 shadow-lg rounded-full px-8 py-3 font-semibold transition-all duration-300 hover:scale-105"
+                    >
+                      <Plus className="h-5 w-5 mr-2" />
+                      Tambah Acara Pertama
+                    </Button>
+                  )}
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {getEventsForTab().map(event => (
+                    <EventCard
+                      key={event.id}
+                      event={event}
+                      onEdit={handleEditEvent}
+                      onDelete={handleDeleteEvent}
+                      onToggleNotification={handleToggleNotification}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
           </TabsContent>
         </Tabs>
       </div>
