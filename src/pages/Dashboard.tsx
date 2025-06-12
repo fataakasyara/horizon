@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Event } from '@/types/event';
 import { useEvents } from '@/hooks/useEvents';
@@ -16,6 +15,9 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Plus, Search, Calendar, Clock, Bell, Home, Filter, Users, Target, TrendingUp, Zap } from 'lucide-react';
+import { TaskManager } from '@/components/TaskManager';
+import { NotesWidget } from '@/components/NotesWidget';
+import { SystemStatus } from '@/components/SystemStatus';
 
 export const Dashboard = () => {
   const { 
@@ -151,6 +153,15 @@ export const Dashboard = () => {
     );
   }
 
+  const handleCalendarDateClick = (date: string) => {
+    // Filter events for the selected date and show them
+    const dayEvents = events.filter(event => event.date === date);
+    if (dayEvents.length > 0) {
+      // You could show a modal or highlight the events
+      console.log('Events for', date, dayEvents);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-horizon-purple-50 via-white to-horizon-yellow-50">
       <OfflineIndicator />
@@ -213,7 +224,7 @@ export const Dashboard = () => {
           <TabsContent value="overview">
             <div className="space-y-8">
               {/* Stats Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div data-stats className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatsCard
                   title="Total Acara"
                   value={totalEvents}
@@ -242,18 +253,30 @@ export const Dashboard = () => {
                 />
               </div>
 
-              {/* Main Content Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Left Column */}
-                <div className="lg:col-span-2 space-y-6">
+              {/* Main Dashboard Grid */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                {/* Left Column - Large widgets */}
+                <div className="lg:col-span-8 space-y-6">
                   <QuickActions onAddEvent={() => setShowForm(true)} />
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <TaskManager />
+                    <NotesWidget />
+                  </div>
+                  
                   <RecentActivity />
                 </div>
 
-                {/* Right Column */}
-                <div className="space-y-6">
+                {/* Right Column - Sidebar widgets */}
+                <div className="lg:col-span-4 space-y-6">
+                  <SystemStatus />
                   <WeatherWidget />
-                  <MiniCalendar events={events.map(e => ({ date: e.date, title: e.title, category: e.category }))} />
+                  <div data-calendar>
+                    <MiniCalendar 
+                      events={events.map(e => ({ date: e.date, title: e.title, category: e.category }))} 
+                      onDateClick={handleCalendarDateClick}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
