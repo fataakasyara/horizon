@@ -223,6 +223,9 @@ export const Dashboard = () => {
           {/* Overview Tab */}
           <TabsContent value="overview">
             <div className="space-y-8">
+              {/* Quick Actions - Moved to top */}
+              <QuickActions onAddEvent={() => setShowForm(true)} />
+
               {/* Stats Cards */}
               <div data-stats className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatsCard
@@ -257,14 +260,10 @@ export const Dashboard = () => {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 {/* Left Column - Large widgets */}
                 <div className="lg:col-span-8 space-y-6">
-                  <QuickActions onAddEvent={() => setShowForm(true)} />
-                  
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <TaskManager />
                     <NotesWidget />
                   </div>
-                  
-                  <RecentActivity />
                 </div>
 
                 {/* Right Column - Sidebar widgets */}
