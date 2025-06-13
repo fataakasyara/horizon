@@ -1,8 +1,7 @@
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Smartphone, Download, Chrome, Safari, MoreVertical, Share, Plus, ArrowLeft } from 'lucide-react';
+import { Smartphone, Download, Chrome, Globe, MoreVertical, Share, Plus, ArrowLeft } from 'lucide-react';
 
 const MobileDownload = () => {
   return (
@@ -81,7 +80,7 @@ const MobileDownload = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-2 mb-4">
                   <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                    <Safari className="h-4 w-4 text-white" />
+                    <Globe className="h-4 w-4 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-800">iOS (Safari)</h3>
                 </div>
