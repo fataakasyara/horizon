@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -50,12 +49,22 @@ const Index = () => {
             <div className="text-2xl font-black bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 bg-clip-text text-transparent">
               HORIZON
             </div>
-            <Button 
-              onClick={() => window.location.href = '/dashboard'}
-              className="bg-horizon-purple-600 hover:bg-horizon-purple-700 text-white px-6 py-2 rounded-full"
-            >
-              Launch App
-            </Button>
+            <div className="flex items-center gap-4">
+              <Button 
+                variant="outline"
+                onClick={() => window.location.href = '/mobile-download'}
+                className="hidden sm:flex border-horizon-purple-200 text-horizon-purple-600 hover:bg-horizon-purple-50"
+              >
+                <Smartphone className="h-4 w-4 mr-2" />
+                Download App
+              </Button>
+              <Button 
+                onClick={() => window.location.href = '/dashboard'}
+                className="bg-horizon-purple-600 hover:bg-horizon-purple-700 text-white px-6 py-2 rounded-full"
+              >
+                Launch App
+              </Button>
+            </div>
           </div>
         </div>
       </nav>
@@ -94,10 +103,11 @@ const Index = () => {
                 <Button 
                   size="lg" 
                   variant="outline"
-                  onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+                  onClick={() => window.location.href = '/mobile-download'}
                   className="border-2 border-gray-300 text-gray-700 hover:border-horizon-purple-300 hover:text-horizon-purple-700 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300"
                 >
-                  Explore Features
+                  <Smartphone className="h-5 w-5 mr-2" />
+                  Download App
                 </Button>
               </div>
 
@@ -223,8 +233,8 @@ const Index = () => {
             <div className="space-y-4">
               <h4 className="font-bold">Product</h4>
               <div className="space-y-2 text-gray-400">
-                <div>Features</div>
-                <div>Pricing</div>
+                <div className="cursor-pointer hover:text-white" onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}>Features</div>
+                <div className="cursor-pointer hover:text-white" onClick={() => window.location.href = '/mobile-download'}>Mobile App</div>
                 <div>Updates</div>
               </div>
             </div>
