@@ -170,9 +170,14 @@ export const Dashboard = () => {
       <div className="bg-gradient-to-r from-horizon-purple-500 via-horizon-purple-600 to-horizon-yellow-500 text-white py-8 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between mb-6">
-            <div className="space-y-2">
-              <h1 className="text-3xl md:text-4xl font-bold">Dashboard</h1>
-              <p className="text-purple-100">Kelola jadwal acara dengan mudah</p>
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                <span className="text-white font-bold text-xl">H</span>
+              </div>
+              <div className="space-y-2">
+                <h1 className="text-3xl md:text-4xl font-bold">Horizon Dashboard</h1>
+                <p className="text-purple-100">Kelola jadwal acara dengan mudah</p>
+              </div>
             </div>
             <Button
               onClick={() => window.location.href = '/'}

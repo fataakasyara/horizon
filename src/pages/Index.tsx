@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -46,8 +47,13 @@ const Index = () => {
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="text-2xl font-black bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 bg-clip-text text-transparent">
-              HORIZON
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">H</span>
+              </div>
+              <div className="text-2xl font-black bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 bg-clip-text text-transparent">
+                HORIZON
+              </div>
             </div>
             <div className="flex items-center gap-4">
               <Button 
@@ -223,8 +229,13 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div className="space-y-4">
-              <div className="text-2xl font-black bg-gradient-to-r from-horizon-purple-400 to-horizon-yellow-400 bg-clip-text text-transparent">
-                HORIZON
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-gradient-to-r from-horizon-purple-400 to-horizon-yellow-400 rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">H</span>
+                </div>
+                <div className="text-2xl font-black bg-gradient-to-r from-horizon-purple-400 to-horizon-yellow-400 bg-clip-text text-transparent">
+                  HORIZON
+                </div>
               </div>
               <p className="text-gray-400">
                 Next-generation scheduling platform for modern professionals.
