@@ -3,9 +3,47 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { OfflineIndicator } from '@/components/OfflineIndicator';
-import { Calendar, Clock, Bell, Wifi, Smartphone, Star, ArrowRight, Zap, Shield, Globe } from 'lucide-react';
+import { Calendar, Smartphone, Star, ArrowRight, Zap, Shield, Globe, Download } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
+  const isMobile = useIsMobile();
+
+  if (!isMobile) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-horizon-yellow-50 via-white to-horizon-purple-50 p-6">
+        <div className="text-center bg-white p-10 rounded-3xl shadow-2xl max-w-lg mx-auto border border-gray-100">
+            <div className="flex justify-center mb-8">
+                <div className="relative">
+                    <Smartphone size={120} className="text-gray-300" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 rounded-xl flex items-center justify-center">
+                        <span className="text-white font-bold text-lg">H</span>
+                    </div>
+                </div>
+            </div>
+            
+            <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+                Pengalaman Terbaik di Mobile
+            </h1>
+            <p className="text-lg text-gray-600 mb-8">
+                Nikmati Horizon sepenuhnya di perangkat mobile Anda. Install aplikasi kami untuk akses offline, sinkronisasi real-time, dan notifikasi.
+            </p>
+            <Button 
+                size="lg"
+                onClick={() => window.location.href = '/mobile-download'}
+                className="bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 hover:from-horizon-purple-700 hover:to-horizon-yellow-600 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
+            >
+                <Download className="h-5 w-5 mr-3" />
+                Lihat Cara Install
+            </Button>
+            <p className="text-sm text-gray-500 mt-6">
+                Anda masih bisa <a href="/dashboard" className="text-horizon-purple-600 font-semibold hover:underline">melanjutkan ke versi web</a>.
+            </p>
+        </div>
+      </div>
+    );
+  }
+
   const features = [
     {
       icon: <Calendar className="h-6 w-6" />,
