@@ -1,7 +1,5 @@
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plus, Calendar, Clock, Bell, Settings, Download, FileText, BarChart3, Zap } from 'lucide-react';
+import { Plus, Calendar, Bell, Download, FileText, BarChart3 } from 'lucide-react';
 
 interface QuickActionsProps {
   onAddEvent: () => void;
@@ -106,32 +104,20 @@ ${events.map((e: any, i: number) => `${i + 1}. ${e.title} - ${e.date} ${e.time}`
   ];
 
   return (
-    <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg rounded-2xl overflow-hidden">
-      <CardHeader className="bg-gradient-to-r from-horizon-purple-500 to-horizon-yellow-500 text-white">
-        <CardTitle className="text-lg font-bold flex items-center gap-2">
-          <Zap className="h-5 w-5" />
-          Quick Actions
-        </CardTitle>
-        <p className="text-sm text-purple-100">Quick access to main features</p>
-      </CardHeader>
-      <CardContent className="p-6">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {actions.map((action, index) => (
-            <Button
-              key={index}
-              variant="outline"
-              onClick={action.onClick}
-              className={`h-auto flex flex-col items-center justify-center gap-3 p-4 border-0 bg-gradient-to-r ${action.color} text-white hover:scale-105 transition-all duration-300 rounded-xl shadow-md hover:shadow-lg group`}
-            >
-              <action.icon className="h-6 w-6 group-hover:scale-110 transition-transform duration-200" />
-              <div className="text-center">
-                <div className="font-semibold text-sm">{action.label}</div>
-                <div className="text-xs opacity-90 mt-1">{action.description}</div>
-              </div>
-            </Button>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+    <div className="w-full">
+      <h2 className="text-base font-bold text-gray-700 mb-3 md:text-lg">Quick Actions</h2>
+      <div className="flex gap-4 overflow-x-auto pb-3">
+        {actions.map((action, index) => (
+          <button
+            key={index}
+            onClick={action.onClick}
+            className={`flex-shrink-0 w-24 h-24 flex flex-col items-center justify-center gap-2 p-3 rounded-2xl text-white shadow-md hover:shadow-lg transition-all duration-300 bg-gradient-to-br ${action.color} hover:scale-105 group`}
+          >
+            <action.icon className="h-6 w-6 mb-1 group-hover:scale-110 transition-transform" />
+            <span className="font-semibold text-xs text-center leading-tight">{action.label}</span>
+          </button>
+        ))}
+      </div>
+    </div>
   );
 };

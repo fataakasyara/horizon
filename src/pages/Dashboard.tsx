@@ -233,8 +233,10 @@ export const Dashboard = () => {
           {/* Overview Tab */}
           <TabsContent value="overview">
             <div className="space-y-8">
-              {/* Quick Actions - Moved to top */}
-              <QuickActions onAddEvent={() => setShowForm(true)} />
+              {/* Quick Actions */}
+              <div className="sticky top-0 z-20 bg-gradient-to-b from-horizon-purple-50/90 via-white/90 to-white/90 backdrop-blur-sm pt-4 pb-2 -mx-4 px-4 md:static md:p-0 md:bg-transparent md:backdrop-blur-none">
+                <QuickActions onAddEvent={() => setShowForm(true)} />
+              </div>
 
               {/* Stats Cards */}
               <div data-stats className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
