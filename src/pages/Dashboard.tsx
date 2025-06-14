@@ -71,7 +71,7 @@ export const Dashboard = () => {
   };
 
   const handleDeleteEvent = (id: string) => {
-    if (window.confirm('Apakah Anda yakin ingin menghapus acara ini?')) {
+    if (window.confirm('Are you sure you want to delete this event?')) {
       deleteEvent(id);
     }
   };
@@ -176,7 +176,7 @@ export const Dashboard = () => {
               </div>
               <div className="space-y-2">
                 <h1 className="text-3xl md:text-4xl font-bold">Horizon Dashboard</h1>
-                <p className="text-purple-100">Kelola jadwal acara dengan mudah</p>
+                <p className="text-purple-100">Manage your schedule with ease</p>
               </div>
             </div>
             <Button
@@ -185,7 +185,7 @@ export const Dashboard = () => {
               className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm rounded-full px-6 py-3 transition-all duration-300 hover:scale-105"
             >
               <Home className="h-4 w-4 mr-2" />
-              Beranda
+              Home
             </Button>
           </div>
         </div>
@@ -207,21 +207,21 @@ export const Dashboard = () => {
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
             >
               <Calendar className="h-4 w-4 mr-2" />
-              Semua Acara
+              All Events
             </TabsTrigger>
             <TabsTrigger 
               value="today" 
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
             >
               <Clock className="h-4 w-4 mr-2" />
-              Hari Ini
+              Today
             </TabsTrigger>
             <TabsTrigger 
               value="upcoming" 
               className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
             >
               <Bell className="h-4 w-4 mr-2" />
-              Mendatang
+              Upcoming
             </TabsTrigger>
           </TabsList>
 
@@ -234,26 +234,26 @@ export const Dashboard = () => {
               {/* Stats Cards */}
               <div data-stats className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <StatsCard
-                  title="Total Acara"
+                  title="Total Events"
                   value={totalEvents}
                   icon={Calendar}
-                  change="+12% dari bulan lalu"
+                  change="+12% from last month"
                   changeType="positive"
                 />
                 <StatsCard
-                  title="Acara Hari Ini"
+                  title="Today's Events"
                   value={todayEvents.length}
                   icon={Clock}
                 />
                 <StatsCard
-                  title="Acara Mendatang"
+                  title="Upcoming Events"
                   value={upcomingEvents.length}
                   icon={Bell}
-                  change="+5 acara minggu ini"
+                  change="+5 events this week"
                   changeType="positive"
                 />
                 <StatsCard
-                  title="Selesai"
+                  title="Completed"
                   value={completedEvents}
                   icon={TrendingUp}
                   change="92% completion rate"
@@ -295,7 +295,7 @@ export const Dashboard = () => {
                   <div className="relative">
                     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <Input
-                      placeholder="Cari acara..."
+                      placeholder="Search events..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-12 bg-white border-gray-200 rounded-full h-12 shadow-sm focus:shadow-md transition-all duration-300"
@@ -307,17 +307,17 @@ export const Dashboard = () => {
                   <Select value={filterCategory} onValueChange={setFilterCategory}>
                     <SelectTrigger className="bg-white border-gray-200 rounded-full h-12 shadow-sm hover:shadow-md transition-all duration-300">
                       <Filter className="h-4 w-4 mr-2" />
-                      <SelectValue placeholder="Kategori" />
+                      <SelectValue placeholder="Category" />
                     </SelectTrigger>
                     <SelectContent className="bg-white rounded-2xl border-0 shadow-2xl">
-                      <SelectItem value="all">Semua Kategori</SelectItem>
+                      <SelectItem value="all">All Categories</SelectItem>
                       <SelectItem value="meeting">Meeting</SelectItem>
                       <SelectItem value="personal">Personal</SelectItem>
-                      <SelectItem value="work">Pekerjaan</SelectItem>
-                      <SelectItem value="social">Sosial</SelectItem>
-                      <SelectItem value="health">Kesehatan</SelectItem>
-                      <SelectItem value="education">Pendidikan</SelectItem>
-                      <SelectItem value="other">Lainnya</SelectItem>
+                      <SelectItem value="work">Work</SelectItem>
+                      <SelectItem value="social">Social</SelectItem>
+                      <SelectItem value="health">Health</SelectItem>
+                      <SelectItem value="education">Education</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -328,7 +328,7 @@ export const Dashboard = () => {
                     className="w-full bg-gradient-to-r from-horizon-purple-500 to-horizon-yellow-500 hover:from-horizon-purple-600 hover:to-horizon-yellow-600 text-white font-semibold rounded-full h-12 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
                   >
                     <Plus className="h-5 w-5 mr-2" />
-                    Tambah Acara
+                    Add Event
                   </Button>
                 </div>
               </div>
@@ -340,15 +340,15 @@ export const Dashboard = () => {
                     <Calendar className="h-12 w-12 text-horizon-purple-400" />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-700 mb-4">
-                    {activeTab === 'today' ? 'Tidak ada acara hari ini' :
-                     activeTab === 'upcoming' ? 'Tidak ada acara mendatang' :
-                     'Belum ada acara'}
+                    {activeTab === 'today' ? 'No events today' :
+                     activeTab === 'upcoming' ? 'No upcoming events' :
+                     'No events yet'}
                   </h3>
                   <p className="text-gray-500 mb-8 max-w-md mx-auto">
-                    {activeTab === 'today' ? 'Hari ini terlihat kosong. Nikmati waktu luang Anda!' :
-                     activeTab === 'upcoming' ? 'Tidak ada acara yang dijadwalkan untuk masa depan.' :
-                     searchTerm || filterCategory !== 'all' ? 'Coba ubah filter pencarian Anda.' :
-                     'Mulai dengan menambahkan acara pertama Anda.'}
+                    {activeTab === 'today' ? 'Today looks clear. Enjoy your free time!' :
+                     activeTab === 'upcoming' ? 'There are no events scheduled for the future.' :
+                     searchTerm || filterCategory !== 'all' ? 'Try changing your search filters.' :
+                     'Get started by adding your first event.'}
                   </p>
                   {(!searchTerm && filterCategory === 'all') && (
                     <Button
@@ -356,7 +356,7 @@ export const Dashboard = () => {
                       className="bg-gradient-to-r from-horizon-purple-500 to-horizon-yellow-500 hover:from-horizon-purple-600 hover:to-horizon-yellow-600 text-white border-0 shadow-lg rounded-full px-8 py-3 font-semibold transition-all duration-300 hover:scale-105"
                     >
                       <Plus className="h-5 w-5 mr-2" />
-                      Tambah Acara Pertama
+                      Add First Event
                     </Button>
                   )}
                 </div>

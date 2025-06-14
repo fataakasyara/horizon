@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -116,7 +115,7 @@ export const TaskManager = () => {
       <CardContent className="space-y-4">
         <div className="flex gap-2">
           <Input
-            placeholder="Tambah task baru..."
+            placeholder="Add a new task..."
             value={newTask}
             onChange={(e) => setNewTask(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && addTask()}
@@ -137,7 +136,7 @@ export const TaskManager = () => {
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-horizon-purple-100 to-horizon-yellow-100 flex items-center justify-center">
                 <CheckCircle className="h-8 w-8 text-horizon-purple-400" />
               </div>
-              <p className="text-gray-500 text-sm">Belum ada task. Tambahkan task pertama Anda!</p>
+              <p className="text-gray-500 text-sm">No tasks yet. Add your first task!</p>
             </div>
           ) : (
             tasks.map(task => (

@@ -1,4 +1,3 @@
-
 import { Event } from '@/types/event';
 import { CountdownTimer } from './CountdownTimer';
 import { Calendar, Clock, MapPin, Edit, Trash2, Bell, BellOff } from 'lucide-react';
@@ -21,7 +20,7 @@ export const EventCard = ({ event, onEdit, onDelete, onToggleNotification }: Eve
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
-    return date.toLocaleDateString('id-ID', {
+    return date.toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
@@ -51,12 +50,12 @@ export const EventCard = ({ event, onEdit, onDelete, onToggleNotification }: Eve
               <div className="flex flex-wrap gap-2">
                 {isToday && (
                   <Badge className="bg-gradient-to-r from-horizon-yellow-400 to-horizon-yellow-500 text-white border-0 rounded-full px-3 py-1 text-xs font-medium animate-pulse">
-                    Hari Ini
+                    Today
                   </Badge>
                 )}
                 {isUpcoming && (
                   <Badge className="bg-gradient-to-r from-horizon-purple-100 to-horizon-purple-200 text-horizon-purple-700 border-0 rounded-full px-3 py-1 text-xs font-medium">
-                    Mendatang
+                    Upcoming
                   </Badge>
                 )}
                 {event.category && (
@@ -137,15 +136,15 @@ export const EventCard = ({ event, onEdit, onDelete, onToggleNotification }: Eve
               <CountdownTimer
                 targetDate={event.date}
                 targetTime={event.time}
-                title="Waktu tersisa"
+                title="Time left"
               />
             </div>
           ) : (
             <div className="text-center p-4 bg-gradient-to-r from-gray-100 to-gray-200 rounded-2xl">
               <p className="text-gray-600 font-medium">
                 {eventDateTime.getTime() < now.getTime() - 24 * 60 * 60 * 1000 
-                  ? 'Acara telah selesai' 
-                  : 'Acara sedang berlangsung'}
+                  ? 'Event has finished' 
+                  : 'Event is ongoing'}
               </p>
             </div>
           )}

@@ -23,15 +23,15 @@ export const QuickActions = ({ onAddEvent }: QuickActionsProps) => {
   const actions = [
     {
       icon: Plus,
-      label: 'Tambah Acara',
-      description: 'Buat acara baru',
+      label: 'Add Event',
+      description: 'Create a new event',
       color: 'from-horizon-purple-500 to-horizon-purple-600',
       onClick: onAddEvent
     },
     {
       icon: Calendar,
-      label: 'Lihat Kalender',
-      description: 'Tampilkan kalender penuh',
+      label: 'View Calendar',
+      description: 'Display full calendar',
       color: 'from-horizon-yellow-400 to-horizon-yellow-500',
       onClick: () => {
         // Scroll to calendar or switch to calendar view
@@ -41,15 +41,15 @@ export const QuickActions = ({ onAddEvent }: QuickActionsProps) => {
     },
     {
       icon: Bell,
-      label: 'Notifikasi',
-      description: 'Kelola pengingat',
+      label: 'Notifications',
+      description: 'Manage reminders',
       color: 'from-green-500 to-green-600',
       onClick: () => {
         if ('Notification' in window) {
           Notification.requestPermission().then(permission => {
             if (permission === 'granted') {
-              new Notification('Notifikasi aktif!', {
-                body: 'Anda akan menerima pengingat acara.',
+              new Notification('Notifications enabled!', {
+                body: 'You will receive event reminders.',
                 icon: '/favicon.ico'
               });
             }
@@ -60,14 +60,14 @@ export const QuickActions = ({ onAddEvent }: QuickActionsProps) => {
     {
       icon: Download,
       label: 'Export Data',
-      description: 'Unduh data acara',
+      description: 'Download event data',
       color: 'from-blue-500 to-blue-600',
       onClick: exportData
     },
     {
       icon: BarChart3,
-      label: 'Statistik',
-      description: 'Lihat ringkasan',
+      label: 'Statistics',
+      description: 'View summary',
       color: 'from-purple-500 to-purple-600',
       onClick: () => {
         // Scroll to stats section
@@ -77,20 +77,20 @@ export const QuickActions = ({ onAddEvent }: QuickActionsProps) => {
     },
     {
       icon: FileText,
-      label: 'Laporan',
-      description: 'Generate laporan',
+      label: 'Report',
+      description: 'Generate report',
       color: 'from-orange-500 to-orange-600',
       onClick: () => {
         const events = JSON.parse(localStorage.getItem('horizon-events') || '[]');
         const report = `
-# Laporan Acara - ${new Date().toLocaleDateString('id-ID')}
+# Event Report - ${new Date().toLocaleDateString('en-US')}
 
-## Ringkasan
-- Total Acara: ${events.length}
-- Acara Selesai: ${events.filter((e: any) => new Date(e.date + 'T' + e.time) < new Date()).length}
-- Acara Mendatang: ${events.filter((e: any) => new Date(e.date + 'T' + e.time) > new Date()).length}
+## Summary
+- Total Events: ${events.length}
+- Completed Events: ${events.filter((e: any) => new Date(e.date + 'T' + e.time) < new Date()).length}
+- Upcoming Events: ${events.filter((e: any) => new Date(e.date + 'T' + e.time) > new Date()).length}
 
-## Detail Acara
+## Event Details
 ${events.map((e: any, i: number) => `${i + 1}. ${e.title} - ${e.date} ${e.time}`).join('\n')}
         `;
         
@@ -98,7 +98,7 @@ ${events.map((e: any, i: number) => `${i + 1}. ${e.title} - ${e.date} ${e.time}`
         const url = URL.createObjectURL(reportBlob);
         const link = document.createElement('a');
         link.href = url;
-        link.download = `laporan-acara-${new Date().toISOString().split('T')[0]}.md`;
+        link.download = `event-report-${new Date().toISOString().split('T')[0]}.md`;
         link.click();
         URL.revokeObjectURL(url);
       }
@@ -112,7 +112,7 @@ ${events.map((e: any, i: number) => `${i + 1}. ${e.title} - ${e.date} ${e.time}`
           <Zap className="h-5 w-5" />
           Quick Actions
         </CardTitle>
-        <p className="text-sm text-purple-100">Akses cepat ke fitur utama</p>
+        <p className="text-sm text-purple-100">Quick access to main features</p>
       </CardHeader>
       <CardContent className="p-6">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">

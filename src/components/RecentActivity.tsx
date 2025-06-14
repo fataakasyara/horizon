@@ -8,8 +8,8 @@ export const RecentActivity = () => {
     {
       id: 1,
       type: 'created',
-      title: 'Meeting dengan Tim Marketing',
-      time: '2 jam yang lalu',
+      title: 'Meeting with Marketing Team',
+      time: '2 hours ago',
       icon: Plus,
       color: 'text-green-600'
     },
@@ -17,7 +17,7 @@ export const RecentActivity = () => {
       id: 2,
       type: 'updated',
       title: 'Project Review Update',
-      time: '4 jam yang lalu',
+      time: '4 hours ago',
       icon: Edit,
       color: 'text-blue-600'
     },
@@ -25,7 +25,7 @@ export const RecentActivity = () => {
       id: 3,
       type: 'deleted',
       title: 'Cancelled Client Call',
-      time: '1 hari yang lalu',
+      time: '1 day ago',
       icon: Trash2,
       color: 'text-red-600'
     },
@@ -33,7 +33,7 @@ export const RecentActivity = () => {
       id: 4,
       type: 'created',
       title: 'Weekly Standup',
-      time: '2 hari yang lalu',
+      time: '2 days ago',
       icon: Plus,
       color: 'text-green-600'
     }
@@ -41,10 +41,10 @@ export const RecentActivity = () => {
 
   const getActionText = (type: string) => {
     switch (type) {
-      case 'created': return 'Ditambahkan';
-      case 'updated': return 'Diperbarui';
-      case 'deleted': return 'Dihapus';
-      default: return 'Aktivitas';
+      case 'created': return 'Added';
+      case 'updated': return 'Updated';
+      case 'deleted': return 'Deleted';
+      default: return 'Activity';
     }
   };
 
@@ -53,7 +53,7 @@ export const RecentActivity = () => {
       <CardHeader>
         <CardTitle className="text-lg font-bold text-gray-800 flex items-center gap-2">
           <Clock className="h-5 w-5 text-horizon-purple-600" />
-          Aktivitas Terbaru
+          Recent Activity
         </CardTitle>
       </CardHeader>
       <CardContent>

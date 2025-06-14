@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { OfflineIndicator } from '@/components/OfflineIndicator';
 import { Smartphone, ArrowRight, Download } from 'lucide-react';
@@ -20,10 +21,10 @@ const Index = () => {
             </div>
             
             <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-                Pengalaman Terbaik di Mobile
+                Best Experience on Mobile
             </h1>
             <p className="text-lg text-gray-600 mb-8">
-                Nikmati Horizon sepenuhnya di perangkat mobile Anda. Install aplikasi kami untuk akses offline, sinkronisasi real-time, dan notifikasi.
+                Enjoy Horizon to the fullest on your mobile device. Install our app for offline access, real-time sync, and notifications.
             </p>
             <Button 
                 size="lg"
@@ -31,10 +32,10 @@ const Index = () => {
                 className="bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 hover:from-horizon-purple-700 hover:to-horizon-yellow-600 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
             >
                 <Download className="h-5 w-5 mr-3" />
-                Lihat Cara Install
+                See How to Install
             </Button>
             <p className="text-sm text-gray-500 mt-6">
-                Anda masih bisa <a href="/dashboard" className="text-horizon-purple-600 font-semibold hover:underline">melanjutkan ke versi web</a>.
+                You can still <a href="/dashboard" className="text-horizon-purple-600 font-semibold hover:underline">continue to the web version</a>.
             </p>
         </div>
       </div>
@@ -64,13 +65,13 @@ const Index = () => {
                 className="hidden sm:flex border-horizon-purple-200 text-horizon-purple-600 hover:bg-horizon-purple-50"
               >
                 <Smartphone className="h-4 w-4 mr-2" />
-                Cara Install
+                How to Install
               </Button>
               <Button 
                 onClick={() => window.location.href = '/dashboard'}
                 className="bg-horizon-purple-600 hover:bg-horizon-purple-700 text-white px-6 py-2 rounded-full"
               >
-                Buka App
+                Open App
               </Button>
             </div>
           </div>
@@ -84,14 +85,14 @@ const Index = () => {
             <span className="text-white font-bold text-5xl">H</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-black leading-tight mb-4">
-            <span className="text-gray-900">Jadwalkan</span>
+            <span className="text-gray-900">Schedule</span>
             <br />
             <span className="bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 bg-clip-text text-transparent">
-              Masa Depanmu
+              Your Future
             </span>
           </h1>
           <p className="text-lg text-gray-600 leading-relaxed max-w-md mx-auto mb-8">
-            Platform manajemen acara yang revolusioner, dirancang untuk gaya hidup modern. Indah, cepat, dan cerdas.
+            A revolutionary event management platform, designed for the modern lifestyle. Beautiful, fast, and smart.
           </p>
           
           <div className="flex flex-col gap-4 w-full max-w-xs">
@@ -100,7 +101,7 @@ const Index = () => {
               onClick={() => window.location.href = '/dashboard'}
               className="w-full bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 hover:from-horizon-purple-700 hover:to-horizon-yellow-600 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
             >
-              Mulai Gunakan
+              Get Started
               <ArrowRight className="h-5 w-5 ml-2" />
             </Button>
             <Button 
@@ -110,7 +111,7 @@ const Index = () => {
               className="w-full border-2 border-gray-300 text-gray-700 hover:border-horizon-purple-300 hover:text-horizon-purple-700 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300"
             >
               <Download className="h-5 w-5 mr-2" />
-              Cara Install
+              How to Install
             </Button>
           </div>
         </div>

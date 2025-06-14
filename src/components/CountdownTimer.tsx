@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Clock } from 'lucide-react';
 
@@ -56,7 +55,7 @@ export const CountdownTimer = ({ targetDate, targetTime, title, onComplete }: Co
       <div className="text-center p-4 horizon-card rounded-lg">
         <Clock className="w-8 h-8 mx-auto mb-2 text-horizon-purple-500" />
         <h3 className="text-lg font-semibold text-horizon-purple-700 mb-1">{title}</h3>
-        <p className="text-horizon-purple-600 font-bold">Acara telah dimulai!</p>
+        <p className="text-horizon-purple-600 font-bold">The event has started!</p>
       </div>
     );
   }
@@ -69,19 +68,19 @@ export const CountdownTimer = ({ targetDate, targetTime, title, onComplete }: Co
       <div className="grid grid-cols-4 gap-2 mb-2">
         <div className="bg-gradient-to-br from-horizon-purple-500 to-horizon-yellow-500 text-white p-2 rounded-lg">
           <div className="text-xl font-bold">{formatNumber(timeLeft.days)}</div>
-          <div className="text-xs">Hari</div>
+          <div className="text-xs">Days</div>
         </div>
         <div className="bg-gradient-to-br from-horizon-purple-500 to-horizon-yellow-500 text-white p-2 rounded-lg">
           <div className="text-xl font-bold">{formatNumber(timeLeft.hours)}</div>
-          <div className="text-xs">Jam</div>
+          <div className="text-xs">Hours</div>
         </div>
         <div className="bg-gradient-to-br from-horizon-purple-500 to-horizon-yellow-500 text-white p-2 rounded-lg">
           <div className="text-xl font-bold">{formatNumber(timeLeft.minutes)}</div>
-          <div className="text-xs">Menit</div>
+          <div className="text-xs">Minutes</div>
         </div>
         <div className="bg-gradient-to-br from-horizon-purple-500 to-horizon-yellow-500 text-white p-2 rounded-lg">
           <div className="text-xl font-bold">{formatNumber(timeLeft.seconds)}</div>
-          <div className="text-xs">Detik</div>
+          <div className="text-xs">Seconds</div>
         </div>
       </div>
     </div>

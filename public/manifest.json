@@ -2,7 +2,7 @@
 {
   "name": "Horizon Event Scheduler",
   "short_name": "Horizon",
-  "description": "Platform manajemen jadwal acara dengan fitur countdown timer, mode offline, dan notifikasi real-time",
+  "description": "Event management platform with countdown timer, offline mode, and real-time notifications",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fef9c3",
@@ -18,14 +18,14 @@
     }
   ],
   "categories": ["productivity", "lifestyle"],
-  "lang": "id",
+  "lang": "en",
   "dir": "ltr",
   "prefer_related_applications": false,
   "shortcuts": [
     {
       "name": "Dashboard",
       "short_name": "Dashboard",
-      "description": "Lihat semua acara Anda",
+      "description": "View all your events",
       "url": "/dashboard",
       "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><defs><linearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:%23a855f7;stop-opacity:1' /><stop offset='100%25' style='stop-color:%23eab308;stop-opacity:1' /></linearGradient></defs><rect width='180' height='180' rx='40' fill='url(%23grad)'/><text x='90' y='115' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-size='80' font-weight='bold'>H</text></svg>", "sizes": "192x192" }]
     }
