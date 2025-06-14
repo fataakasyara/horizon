@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -100,88 +99,54 @@ const Index = () => {
                 className="hidden sm:flex border-horizon-purple-200 text-horizon-purple-600 hover:bg-horizon-purple-50"
               >
                 <Smartphone className="h-4 w-4 mr-2" />
-                Download App
+                Cara Install
               </Button>
               <Button 
                 onClick={() => window.location.href = '/dashboard'}
                 className="bg-horizon-purple-600 hover:bg-horizon-purple-700 text-white px-6 py-2 rounded-full"
               >
-                Launch App
+                Buka App
               </Button>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <Badge className="bg-horizon-yellow-100 text-horizon-yellow-800 border-0 px-4 py-2 rounded-full">
-                  ✨ Next-Gen Scheduling
-                </Badge>
-                <h1 className="text-5xl md:text-7xl font-black leading-tight">
-                  <span className="text-gray-900">Schedule</span>
-                  <br />
-                  <span className="bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 bg-clip-text text-transparent">
-                    Simplified
-                  </span>
-                </h1>
-                <p className="text-xl text-gray-600 leading-relaxed max-w-lg">
-                  Revolutionary event management platform designed for the modern lifestyle. 
-                  Beautiful, fast, and intelligent.
-                </p>
-              </div>
-              
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button 
-                  size="lg" 
-                  onClick={() => window.location.href = '/dashboard'}
-                  className="bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 hover:from-horizon-purple-700 hover:to-horizon-yellow-600 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
-                >
-                  Get Started
-                  <ArrowRight className="h-5 w-5 ml-2" />
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  onClick={() => window.location.href = '/mobile-download'}
-                  className="border-2 border-gray-300 text-gray-700 hover:border-horizon-purple-300 hover:text-horizon-purple-700 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300"
-                >
-                  <Smartphone className="h-5 w-5 mr-2" />
-                  Download App
-                </Button>
-              </div>
-            </div>
-
-            {/* Hero Visual */}
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-horizon-purple-100 to-horizon-yellow-100 rounded-3xl transform rotate-3"></div>
-              <div className="relative bg-white rounded-3xl shadow-2xl p-8 border border-gray-100">
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <div className="text-lg font-bold text-gray-800">Today's Schedule</div>
-                    <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                  </div>
-                  
-                  {[
-                    { time: "09:00", title: "Team Meeting", color: "horizon-purple" },
-                    { time: "11:30", title: "Project Review", color: "horizon-yellow" },
-                    { time: "14:00", title: "Client Call", color: "horizon-purple" },
-                  ].map((event, i) => (
-                    <div key={i} className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl">
-                      <div className={`w-4 h-4 bg-${event.color}-500 rounded-full`}></div>
-                      <div className="flex-1">
-                        <div className="font-semibold text-gray-800">{event.title}</div>
-                        <div className="text-sm text-gray-500">{event.time}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+      {/* Mobile-First Hero Section */}
+      <section className="pt-24 pb-20 px-4 text-center bg-gradient-to-b from-horizon-yellow-50 to-white">
+        <div className="max-w-7xl mx-auto flex flex-col items-center justify-center min-h-[calc(100vh-10rem)]">
+          <div className="w-24 h-24 bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 rounded-3xl flex items-center justify-center shadow-lg mb-6">
+            <span className="text-white font-bold text-5xl">H</span>
+          </div>
+          <h1 className="text-5xl md:text-6xl font-black leading-tight mb-4">
+            <span className="text-gray-900">Jadwalkan</span>
+            <br />
+            <span className="bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 bg-clip-text text-transparent">
+              Masa Depanmu
+            </span>
+          </h1>
+          <p className="text-lg text-gray-600 leading-relaxed max-w-md mx-auto mb-8">
+            Platform manajemen acara yang revolusioner, dirancang untuk gaya hidup modern. Indah, cepat, dan cerdas.
+          </p>
+          
+          <div className="flex flex-col gap-4 w-full max-w-xs">
+            <Button 
+              size="lg" 
+              onClick={() => window.location.href = '/dashboard'}
+              className="w-full bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 hover:from-horizon-purple-700 hover:to-horizon-yellow-600 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
+            >
+              Mulai Gunakan
+              <ArrowRight className="h-5 w-5 ml-2" />
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline"
+              onClick={() => window.location.href = '/mobile-download'}
+              className="w-full border-2 border-gray-300 text-gray-700 hover:border-horizon-purple-300 hover:text-horizon-purple-700 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300"
+            >
+              <Download className="h-5 w-5 mr-2" />
+              Cara Install
+            </Button>
           </div>
         </div>
       </section>

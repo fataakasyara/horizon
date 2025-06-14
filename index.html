@@ -30,10 +30,43 @@
     <!-- Custom Horizon Icons -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><linearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:%23a855f7;stop-opacity:1' /><stop offset='100%25' style='stop-color:%23eab308;stop-opacity:1' /></linearGradient></defs><rect width='32' height='32' rx='8' fill='url(%23grad)'/><text x='16' y='22' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-size='18' font-weight='bold'>H</text></svg>" type="image/svg+xml">
     <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><defs><linearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:%23a855f7;stop-opacity:1' /><stop offset='100%25' style='stop-color:%23eab308;stop-opacity:1' /></linearGradient></defs><rect width='180' height='180' rx='40' fill='url(%23grad)'/><text x='90' y='115' text-anchor='middle' fill='white' font-family='Arial,sans-serif' font-size='80' font-weight='bold'>H</text></svg>">
+    <style>
+      body {
+        background-color: #fef9c3; /* same as manifest background_color */
+      }
+      .app-loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 100vw;
+        transition: opacity 0.5s ease-out;
+      }
+      .app-loading .logo {
+        width: 80px;
+        height: 80px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(to right, #a855f7, #eab308);
+        color: white;
+        font-family: Arial, sans-serif;
+        font-size: 40px;
+        font-weight: bold;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      }
+    </style>
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="app-loading">
+        <div class="logo">H</div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
+
