@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { OfflineIndicator } from '@/components/OfflineIndicator';
-import { Calendar, Smartphone, Star, ArrowRight, Zap, Shield, Globe, Download } from 'lucide-react';
+import { Calendar, Smartphone, Star, ArrowRight, Zap, Shield, Globe, Download, Bell } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
