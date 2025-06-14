@@ -18,6 +18,8 @@ import { Plus, Search, Calendar, Clock, Bell, Home, Filter, Users, Target, Trend
 import { TaskManager } from '@/components/TaskManager';
 import { NotesWidget } from '@/components/NotesWidget';
 import { SystemStatus } from '@/components/SystemStatus';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { BottomNavBar } from '@/components/BottomNavBar';
 
 export const Dashboard = () => {
   const { 
@@ -30,6 +32,7 @@ export const Dashboard = () => {
   } = useEvents();
   
   const { requestPermission, scheduleNotification } = useNotifications();
+  const isMobile = useIsMobile();
   
   const [showForm, setShowForm] = useState(false);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
@@ -163,29 +166,29 @@ export const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-horizon-purple-50 via-white to-horizon-yellow-50">
+    <div className={`min-h-screen bg-gradient-to-br from-horizon-purple-50 via-white to-horizon-yellow-50 ${isMobile ? 'pb-20' : ''}`}>
       <OfflineIndicator />
       
       {/* Header */}
-      <div className="bg-gradient-to-r from-horizon-purple-500 via-horizon-purple-600 to-horizon-yellow-500 text-white py-8 px-4">
+      <div className="bg-gradient-to-r from-horizon-purple-500 via-horizon-purple-600 to-horizon-yellow-500 text-white py-6 sm:py-8 px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center space-x-4">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                <span className="text-white font-bold text-xl">H</span>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-3 sm:space-x-4">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                <span className="text-white font-bold text-lg sm:text-xl">H</span>
               </div>
-              <div className="space-y-2">
-                <h1 className="text-3xl md:text-4xl font-bold">Horizon Dashboard</h1>
-                <p className="text-purple-100">Manage your schedule with ease</p>
+              <div className="space-y-0 sm:space-y-1">
+                <h1 className="text-2xl sm:text-3xl font-bold">Dashboard</h1>
+                <p className="text-purple-100 text-sm hidden sm:block">Manage your schedule with ease</p>
               </div>
             </div>
             <Button
               onClick={() => window.location.href = '/'}
               variant="outline"
-              className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm rounded-full px-6 py-3 transition-all duration-300 hover:scale-105"
+              className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm rounded-full p-2 sm:px-6 sm:py-3 transition-all duration-300 hover:scale-105"
             >
-              <Home className="h-4 w-4 mr-2" />
-              Home
+              <Home className="h-5 w-5 sm:mr-2" />
+              <span className="hidden sm:inline">Home</span>
             </Button>
           </div>
         </div>
@@ -194,36 +197,38 @@ export const Dashboard = () => {
       {/* Content */}
       <div className="max-w-7xl mx-auto py-8 px-4">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-          <TabsList className="grid w-full grid-cols-4 bg-white/60 backdrop-blur-sm border-0 shadow-lg rounded-2xl p-2">
-            <TabsTrigger 
-              value="overview" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
-            >
-              <Target className="h-4 w-4 mr-2" />
-              Overview
-            </TabsTrigger>
-            <TabsTrigger 
-              value="events" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
-            >
-              <Calendar className="h-4 w-4 mr-2" />
-              All Events
-            </TabsTrigger>
-            <TabsTrigger 
-              value="today" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
-            >
-              <Clock className="h-4 w-4 mr-2" />
-              Today
-            </TabsTrigger>
-            <TabsTrigger 
-              value="upcoming" 
-              className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
-            >
-              <Bell className="h-4 w-4 mr-2" />
-              Upcoming
-            </TabsTrigger>
-          </TabsList>
+          {!isMobile && (
+            <TabsList className="grid w-full grid-cols-4 bg-white/60 backdrop-blur-sm border-0 shadow-lg rounded-2xl p-2">
+              <TabsTrigger 
+                value="overview" 
+                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
+              >
+                <Target className="h-4 w-4 mr-2" />
+                Overview
+              </TabsTrigger>
+              <TabsTrigger 
+                value="events" 
+                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
+              >
+                <Calendar className="h-4 w-4 mr-2" />
+                All Events
+              </TabsTrigger>
+              <TabsTrigger 
+                value="today" 
+                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
+              >
+                <Clock className="h-4 w-4 mr-2" />
+                Today
+              </TabsTrigger>
+              <TabsTrigger 
+                value="upcoming" 
+                className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-horizon-purple-500 data-[state=active]:to-horizon-yellow-500 data-[state=active]:text-white rounded-xl transition-all duration-300 font-medium"
+              >
+                <Bell className="h-4 w-4 mr-2" />
+                Upcoming
+              </TabsTrigger>
+            </TabsList>
+          )}
 
           {/* Overview Tab */}
           <TabsContent value="overview">
@@ -323,13 +328,15 @@ export const Dashboard = () => {
                 </div>
                 
                 <div className="lg:col-span-3">
-                  <Button
-                    onClick={() => setShowForm(true)}
-                    className="w-full bg-gradient-to-r from-horizon-purple-500 to-horizon-yellow-500 hover:from-horizon-purple-600 hover:to-horizon-yellow-600 text-white font-semibold rounded-full h-12 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-                  >
-                    <Plus className="h-5 w-5 mr-2" />
-                    Add Event
-                  </Button>
+                  {!isMobile && (
+                    <Button
+                      onClick={() => setShowForm(true)}
+                      className="w-full bg-gradient-to-r from-horizon-purple-500 to-horizon-yellow-500 hover:from-horizon-purple-600 hover:to-horizon-yellow-600 text-white font-semibold rounded-full h-12 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+                    >
+                      <Plus className="h-5 w-5 mr-2" />
+                      Add Event
+                    </Button>
+                  )}
                 </div>
               </div>
 
@@ -377,6 +384,17 @@ export const Dashboard = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {isMobile && !showForm && (
+        <Button
+          onClick={() => setShowForm(true)}
+          className="fixed bottom-20 right-4 h-14 w-14 rounded-full bg-gradient-to-r from-horizon-purple-500 to-horizon-yellow-500 text-white shadow-lg z-40 flex items-center justify-center animate-scale-in"
+        >
+          <Plus className="h-6 w-6" />
+        </Button>
+      )}
+
+      {isMobile && <BottomNavBar activeTab={activeTab} onTabChange={setActiveTab} />}
     </div>
   );
 };
