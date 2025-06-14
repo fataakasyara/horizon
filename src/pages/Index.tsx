@@ -1,8 +1,6 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { OfflineIndicator } from '@/components/OfflineIndicator';
-import { Calendar, Smartphone, Star, ArrowRight, Zap, Shield, Globe, Download, Bell } from 'lucide-react';
+import { Smartphone, ArrowRight, Download } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 const Index = () => {
@@ -42,39 +40,6 @@ const Index = () => {
       </div>
     );
   }
-
-  const features = [
-    {
-      icon: <Calendar className="h-6 w-6" />,
-      title: "Event Management",
-      description: "Organize your schedule with precision and style"
-    },
-    {
-      icon: <Zap className="h-6 w-6" />,
-      title: "Real-time Sync",
-      description: "Instant updates across all your devices"
-    },
-    {
-      icon: <Shield className="h-6 w-6" />,
-      title: "Offline First",
-      description: "Works seamlessly without internet connection"
-    },
-    {
-      icon: <Bell className="h-6 w-6" />,
-      title: "Smart Alerts",
-      description: "Never miss important moments again"
-    },
-    {
-      icon: <Globe className="h-6 w-6" />,
-      title: "Universal Access",
-      description: "Access from anywhere, anytime"
-    },
-    {
-      icon: <Star className="h-6 w-6" />,
-      title: "Premium Experience",
-      description: "Crafted for productivity enthusiasts"
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -150,92 +115,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-
-      {/* Features Section */}
-      <section id="features" className="py-20 px-4 bg-gray-50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-              Powerful Features
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Everything you need to manage your time effectively
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-3xl bg-white">
-                <CardContent className="p-8">
-                  <div className="space-y-4">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${
-                      index % 2 === 0 
-                        ? 'from-horizon-purple-500 to-horizon-purple-600' 
-                        : 'from-horizon-yellow-400 to-horizon-yellow-500'
-                    } flex items-center justify-center text-white`}>
-                      {feature.icon}
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900">
-                      {feature.title}
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-r from-horizon-purple-400 to-horizon-yellow-400 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">H</span>
-                </div>
-                <div className="text-2xl font-black bg-gradient-to-r from-horizon-purple-400 to-horizon-yellow-400 bg-clip-text text-transparent">
-                  HORIZON
-                </div>
-              </div>
-              <p className="text-gray-400">
-                Next-generation scheduling platform for modern professionals.
-              </p>
-            </div>
-            <div className="space-y-4">
-              <h4 className="font-bold">Product</h4>
-              <div className="space-y-2 text-gray-400">
-                <div className="cursor-pointer hover:text-white" onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}>Features</div>
-                <div className="cursor-pointer hover:text-white" onClick={() => window.location.href = '/mobile-download'}>Mobile App</div>
-                <div>Updates</div>
-              </div>
-            </div>
-            <div className="space-y-4">
-              <h4 className="font-bold">Company</h4>
-              <div className="space-y-2 text-gray-400">
-                <div>About</div>
-                <div>Blog</div>
-                <div>Careers</div>
-              </div>
-            </div>
-            <div className="space-y-4">
-              <h4 className="font-bold">Support</h4>
-              <div className="space-y-2 text-gray-400">
-                <div>Help Center</div>
-                <div>Contact</div>
-                <div>Status</div>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Horizon. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
