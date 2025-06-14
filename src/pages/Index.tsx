@@ -116,22 +116,6 @@ const Index = () => {
                   Download App
                 </Button>
               </div>
-
-              {/* Stats */}
-              <div className="grid grid-cols-3 gap-8 pt-8">
-                <div className="text-center">
-                  <div className="text-3xl font-black text-horizon-purple-600">100%</div>
-                  <div className="text-sm text-gray-500 font-medium">Offline Ready</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-black text-horizon-yellow-600">∞</div>
-                  <div className="text-sm text-gray-500 font-medium">Events</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-black text-horizon-purple-600">24/7</div>
-                  <div className="text-sm text-gray-500 font-medium">Available</div>
-                </div>
-              </div>
             </div>
 
             {/* Hero Visual */}
@@ -198,28 +182,6 @@ const Index = () => {
                 </CardContent>
               </Card>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="bg-gradient-to-r from-horizon-purple-600 to-horizon-yellow-500 rounded-3xl p-12 text-white">
-            <h2 className="text-4xl md:text-5xl font-black mb-6">
-              Ready to Transform Your Schedule?
-            </h2>
-            <p className="text-xl mb-8 opacity-90">
-              Join thousands who've already revolutionized their time management
-            </p>
-            <Button 
-              size="lg"
-              onClick={() => window.location.href = '/dashboard'}
-              className="bg-white text-horizon-purple-600 hover:bg-gray-100 px-8 py-4 rounded-full text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
-            >
-              Start Your Journey
-              <ArrowRight className="h-5 w-5 ml-2" />
-            </Button>
           </div>
         </div>
       </section>
