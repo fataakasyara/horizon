@@ -14,9 +14,7 @@ export const ContactDeveloper = () => {
       </CardHeader>
       <CardContent className="text-center space-y-4">
         <div className="space-y-2">
-          <p className="text-gray-600">
-            Aplikasi ini dikembangkan dengan  
-          </p>
+          <p className="text-gray-600">Aplikasi ini dikembangkan oleh kasyara</p>
           <p className="text-sm text-gray-500">
             Punya saran atau ingin berkolaborasi? Hubungi developer!
           </p>
