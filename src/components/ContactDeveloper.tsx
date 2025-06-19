@@ -20,7 +20,7 @@ export const ContactDeveloper = () => {
         
         <Button onClick={handleContactClick} className="bg-gradient-to-r from-horizon-purple-500 to-horizon-yellow-500 hover:from-horizon-purple-600 hover:to-horizon-yellow-600 text-white font-semibold rounded-full px-6 py-2 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
           <MessageCircle className="h-4 w-4 mr-2" />
-          Kunjungi Website
+          Visit Developer
           <ExternalLink className="h-4 w-4 ml-2" />
         </Button>
       </CardContent>
