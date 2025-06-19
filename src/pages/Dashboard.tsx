@@ -15,8 +15,6 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Plus, Search, Calendar, Clock, Bell, Home, Filter, Users, Target, TrendingUp, Zap } from 'lucide-react';
-import { TaskManager } from '@/components/TaskManager';
-import { NotesWidget } from '@/components/NotesWidget';
 import { SystemStatus } from '@/components/SystemStatus';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { BottomNavBar } from '@/components/BottomNavBar';
@@ -268,27 +266,30 @@ export const Dashboard = () => {
                 />
               </div>
 
-              {/* Main Dashboard Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                {/* Left Column - Large widgets */}
-                <div className="lg:col-span-8 space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <TaskManager />
-                    <NotesWidget />
-                  </div>
+              {/* Main Dashboard Grid - Simplified */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* System Status */}
+                <div className="lg:col-span-1">
+                  <SystemStatus />
                 </div>
 
-                {/* Right Column - Sidebar widgets */}
-                <div className="lg:col-span-4 space-y-6">
-                  <SystemStatus />
+                {/* Weather Widget */}
+                <div className="lg:col-span-1">
                   <WeatherWidget />
-                  <div data-calendar>
-                    <MiniCalendar 
-                      events={events.map(e => ({ date: e.date, title: e.title, category: e.category }))} 
-                      onDateClick={handleCalendarDateClick}
-                    />
-                  </div>
                 </div>
+
+                {/* Mini Calendar */}
+                <div className="lg:col-span-1" data-calendar>
+                  <MiniCalendar 
+                    events={events.map(e => ({ date: e.date, title: e.title, category: e.category }))} 
+                    onDateClick={handleCalendarDateClick}
+                  />
+                </div>
+              </div>
+
+              {/* Recent Activity - Full Width */}
+              <div className="w-full">
+                <RecentActivity />
               </div>
             </div>
           </TabsContent>
