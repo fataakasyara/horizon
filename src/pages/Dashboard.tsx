@@ -8,7 +8,6 @@ import { OfflineIndicator } from '@/components/OfflineIndicator';
 import { StatsCard } from '@/components/StatsCard';
 import { QuickActions } from '@/components/QuickActions';
 import { MiniCalendar } from '@/components/MiniCalendar';
-import { RecentActivity } from '@/components/RecentActivity';
 import { WeatherWidget } from '@/components/WeatherWidget';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,6 +17,7 @@ import { Plus, Search, Calendar, Clock, Bell, Home, Filter, Users, Target, Trend
 import { SystemStatus } from '@/components/SystemStatus';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { BottomNavBar } from '@/components/BottomNavBar';
+import { ContactDeveloper } from '@/components/ContactDeveloper';
 
 export const Dashboard = () => {
   const { 
@@ -287,9 +287,9 @@ export const Dashboard = () => {
                 </div>
               </div>
 
-              {/* Recent Activity - Full Width */}
+              {/* Contact Developer - Full Width */}
               <div className="w-full">
-                <RecentActivity />
+                <ContactDeveloper />
               </div>
             </div>
           </TabsContent>
